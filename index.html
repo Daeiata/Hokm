@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0f172a">
-    <title>حکم‌شمار و لیگ ابری</title>
+    <title>لیگ حکم ابری</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <style>
@@ -21,157 +21,221 @@
         }
     </style>
 </head>
-<body class="suit-bg min-h-screen pb-12">
+<body class="suit-bg min-h-screen pb-20">
 
     <!-- Header -->
     <header class="bg-slate-900/95 backdrop-blur border-b border-slate-800 sticky top-0 z-50">
-        <div class="max-w-md mx-auto px-3 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-1.5">
+        <div class="max-w-md mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
                 <span class="text-lg text-red-500">♥️</span>
-                <h1 class="text-sm font-bold bg-gradient-to-l from-amber-400 to-orange-500 bg-clip-text text-transparent">لیگ حکم</h1>
-                <span id="cloudStatusBadge" onclick="syncFromCloud(true)" class="cursor-pointer text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 flex items-center gap-1">
-                    <span id="cloudStatusDot" class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
-                    <span id="cloudStatusText">حافظه گوشی</span>
-                </span>
+                <h1 class="text-sm font-bold bg-gradient-to-l from-amber-400 to-orange-500 bg-clip-text text-transparent" id="topLeagueTitle">لیگ حکم</h1>
             </div>
-            <div class="flex items-center gap-1">
-                <button onclick="syncFromCloud(true)" id="refreshCloudBtn" class="hidden text-xs bg-slate-800 active:bg-slate-700 text-emerald-400 px-2 py-1.5 rounded-lg border border-slate-700">
-                    🔄 بروزرسانی
-                </button>
-                <button onclick="toggleModal('settingsModal')" class="text-xs bg-slate-800 active:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg border border-slate-700">
-                    ⚙️ تنظیمات
+            <div class="flex items-center gap-2">
+                <span id="cloudStatusBadge" onclick="syncFromCloud(true)" class="cursor-pointer text-[10px] px-2 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700 flex items-center gap-1">
+                    <span id="cloudStatusDot" class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+                    <span id="cloudStatusText">اتصال ابری</span>
+                </span>
+                <button onclick="syncFromCloud(true)" class="text-xs bg-slate-800 active:bg-slate-700 text-emerald-400 px-2 py-1 rounded-lg border border-slate-700">
+                    🔄
                 </button>
             </div>
         </div>
     </header>
 
-    <main class="max-w-md mx-auto px-3 mt-4 space-y-4">
+    <main class="max-w-md mx-auto px-4 mt-4 space-y-4">
 
-        <!-- League Banner -->
-        <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-4 border border-slate-700/80 shadow-lg">
-            <div class="flex justify-between items-center mb-2">
-                <span id="leagueNameDisplay" class="text-sm font-semibold text-amber-400">🏆 لیگ ماهانه حکم</span>
-                <span id="leagueDaysDisplay" class="text-xs bg-slate-950/60 text-slate-400 px-2.5 py-1 rounded-full border border-slate-800">روز ۱ از ۳۰</span>
+        <!-- TAB 1: GAME / COUNTER -->
+        <div id="tab-game" class="tab-content space-y-4">
+            <!-- League Banner Card -->
+            <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-4 border border-slate-700/80 shadow-lg">
+                <div class="flex justify-between items-center mb-2">
+                    <span id="leagueNameDisplay" class="text-sm font-semibold text-amber-400">🏆 لیگ ماهانه حکم</span>
+                    <span id="leagueDaysDisplay" class="text-xs bg-slate-950/60 text-slate-400 px-2.5 py-1 rounded-full border border-slate-800">روز ۱ از ۳۰</span>
+                </div>
+                <div class="grid grid-cols-3 items-center text-center bg-slate-950/40 rounded-xl p-3 border border-slate-800/60">
+                    <div>
+                        <div id="team1NameLeague" class="text-xs text-slate-400 truncate">تیم ما</div>
+                        <div id="team1MatchWins" class="text-3xl font-black text-emerald-400 mt-1">0</div>
+                        <div class="text-[10px] text-slate-500">امتیاز کل</div>
+                    </div>
+                    <div class="text-xs font-bold text-slate-500">
+                        VS
+                        <div class="mt-1 text-[10px] text-amber-500/80" id="leaderBadge">مساوی</div>
+                    </div>
+                    <div>
+                        <div id="team2NameLeague" class="text-xs text-slate-400 truncate">تیم حریف</div>
+                        <div id="team2MatchWins" class="text-3xl font-black text-blue-400 mt-1">0</div>
+                        <div class="text-[10px] text-slate-500">امتیاز کل</div>
+                    </div>
+                </div>
             </div>
-            <div class="grid grid-cols-3 items-center text-center bg-slate-950/40 rounded-xl p-3 border border-slate-800/60">
-                <div>
-                    <div id="team1NameLeague" class="text-xs text-slate-400 truncate">تیم ما</div>
-                    <div id="team1MatchWins" class="text-3xl font-black text-emerald-400 mt-1">0</div>
-                    <div class="text-[10px] text-slate-500">امتیاز کل</div>
+
+            <!-- Current Match Scoreboard (7 Hands) -->
+            <div class="bg-slate-900 rounded-2xl p-4 border border-slate-800 shadow-xl">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                        شمارش دست جاری (تا ۷)
+                    </h2>
+                    <button onclick="undoLastHand()" id="undoBtn" class="text-xs text-amber-400 disabled:opacity-30 transition flex items-center gap-1" disabled>
+                        ↩️ برگشت دست قبل
+                    </button>
                 </div>
-                <div class="text-xs font-bold text-slate-500">
-                    VS
-                    <div class="mt-1 text-[10px] text-amber-500/80" id="leaderBadge">مساوی</div>
+
+                <!-- Hakem Selection -->
+                <div class="bg-slate-950/70 p-2.5 rounded-xl border border-slate-800/80 mb-4">
+                    <div class="text-[11px] text-slate-400 text-center mb-2">👑 <span class="text-amber-400 font-semibold">حاکم</span> این دست کدام تیم است؟</div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button id="hakemTeam1Btn" onclick="setHakem(1)" class="py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border">
+                            👑 <span class="team1NameText">تیم ما</span>
+                        </button>
+                        <button id="hakemTeam2Btn" onclick="setHakem(2)" class="py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border">
+                            👑 <span class="team2NameText">تیم حریف</span>
+                        </button>
+                    </div>
                 </div>
-                <div>
-                    <div id="team2NameLeague" class="text-xs text-slate-400 truncate">تیم حریف</div>
-                    <div id="team2MatchWins" class="text-3xl font-black text-blue-400 mt-1">0</div>
-                    <div class="text-[10px] text-slate-500">امتیاز کل</div>
+
+                <!-- Hands Counter -->
+                <div class="grid grid-cols-2 gap-3 text-center">
+                    <!-- Team 1 -->
+                    <div class="bg-slate-950/50 p-3.5 rounded-2xl border border-emerald-500/20 flex flex-col items-center">
+                        <h3 class="team1NameText font-bold text-emerald-400 text-sm mb-1 truncate w-full">تیم ما</h3>
+                        <div id="team1CurrentHands" class="text-6xl font-black text-white my-2">0</div>
+                        <div id="team1Seeds" class="flex gap-1 h-4 mb-3 items-center justify-center"></div>
+                        <button onclick="scoreHand(1)" class="w-full bg-emerald-600 active:scale-95 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-emerald-900/30 transition text-sm">
+                            + ثبت دست
+                        </button>
+                    </div>
+
+                    <!-- Team 2 -->
+                    <div class="bg-slate-950/50 p-3.5 rounded-2xl border border-blue-500/20 flex flex-col items-center">
+                        <h3 class="team2NameText font-bold text-blue-400 text-sm mb-1 truncate w-full">تیم حریف</h3>
+                        <div id="team2CurrentHands" class="text-6xl font-black text-white my-2">0</div>
+                        <div id="team2Seeds" class="flex gap-1 h-4 mb-3 items-center justify-center"></div>
+                        <button onclick="scoreHand(2)" class="w-full bg-blue-600 active:scale-95 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-900/30 transition text-sm">
+                            + ثبت دست
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-3 text-center">
+                    <button onclick="resetCurrentMatch()" class="text-[11px] text-slate-500 active:text-red-400 py-1">
+                        صفر کردن دست جاری
+                    </button>
                 </div>
             </div>
         </div>
 
-        <!-- Current Match Scoreboard (7 Hands) -->
-        <div class="bg-slate-900 rounded-2xl p-4 border border-slate-800 shadow-xl">
-            <div class="flex justify-between items-center mb-3">
-                <h2 class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                    شمارش دست جاری (تا ۷)
-                </h2>
-                <button onclick="undoLastHand()" id="undoBtn" class="text-xs text-amber-400 disabled:opacity-30 transition flex items-center gap-1" disabled>
-                    ↩️ برگشت دست قبل
-                </button>
-            </div>
-
-            <!-- Hakem Selection -->
-            <div class="bg-slate-950/70 p-2.5 rounded-xl border border-slate-800/80 mb-4">
-                <div class="text-[11px] text-slate-400 text-center mb-2">👑 <span class="text-amber-400 font-semibold">حاکم</span> این دست کدام تیم است؟</div>
-                <div class="grid grid-cols-2 gap-2">
-                    <button id="hakemTeam1Btn" onclick="setHakem(1)" class="py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border">
-                        👑 <span class="team1NameText">تیم ما</span>
-                    </button>
-                    <button id="hakemTeam2Btn" onclick="setHakem(2)" class="py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border">
-                        👑 <span class="team2NameText">تیم حریف</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Hands Counter -->
-            <div class="grid grid-cols-2 gap-3 text-center">
-                <!-- Team 1 -->
-                <div class="bg-slate-950/50 p-3.5 rounded-2xl border border-emerald-500/20 flex flex-col items-center">
-                    <h3 class="team1NameText font-bold text-emerald-400 text-sm mb-1 truncate w-full">تیم ما</h3>
-                    <div id="team1CurrentHands" class="text-6xl font-black text-white my-2">0</div>
-                    <div id="team1Seeds" class="flex gap-1 h-4 mb-3 items-center justify-center"></div>
-                    <button onclick="scoreHand(1)" class="w-full bg-emerald-600 active:scale-95 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-emerald-900/30 transition text-sm">
-                        + ثبت دست
-                    </button>
-                </div>
-
-                <!-- Team 2 -->
-                <div class="bg-slate-950/50 p-3.5 rounded-2xl border border-blue-500/20 flex flex-col items-center">
-                    <h3 class="team2NameText font-bold text-blue-400 text-sm mb-1 truncate w-full">تیم حریف</h3>
-                    <div id="team2CurrentHands" class="text-6xl font-black text-white my-2">0</div>
-                    <div id="team2Seeds" class="flex gap-1 h-4 mb-3 items-center justify-center"></div>
-                    <button onclick="scoreHand(2)" class="w-full bg-blue-600 active:scale-95 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-900/30 transition text-sm">
-                        + ثبت دست
-                    </button>
-                </div>
-            </div>
-
-            <div class="mt-3 text-center">
-                <button onclick="resetCurrentMatch()" class="text-[11px] text-slate-500 active:text-red-400 py-1">
-                    صفر کردن دست جاری
-                </button>
+        <!-- TAB 2: STATS -->
+        <div id="tab-stats" class="tab-content space-y-4 hidden">
+            <div class="bg-slate-900 rounded-2xl p-4 border border-slate-800 shadow-lg">
+                <h2 class="text-xs font-bold text-slate-300 mb-3">📊 آمار جامع لیگ و کوت‌ها</h2>
+                <table class="w-full text-xs text-center border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-800 text-slate-400">
+                            <th class="py-2 text-right font-normal">عنوان آمار</th>
+                            <th class="py-2 text-emerald-400 font-bold team1NameText">تیم ما</th>
+                            <th class="py-2 text-blue-400 font-bold team2NameText">تیم حریف</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60">
+                        <tr>
+                            <td class="py-3 text-right text-slate-300">🏆 مجموع امتیازات (بردها)</td>
+                            <td id="statTeam1Matches" class="py-3 font-bold text-sm text-white">0</td>
+                            <td id="statTeam2Matches" class="py-3 font-bold text-sm text-white">0</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 text-right text-slate-300">⚡ تعداد کوت (۲ امتیازی)</td>
+                            <td id="statTeam1Koot" class="py-3 font-bold text-amber-400">0</td>
+                            <td id="statTeam2Koot" class="py-3 font-bold text-amber-400">0</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 text-right text-slate-300">🔥 حاکم‌کوتی (۳ امتیازی)</td>
+                            <td id="statTeam1HakemKoot" class="py-3 font-bold text-red-400">0</td>
+                            <td id="statTeam2HakemKoot" class="py-3 font-bold text-red-400">0</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 text-right text-slate-300">✋ کل دست‌های برده‌شده</td>
+                            <td id="statTeam1TotalHands" class="py-3 text-slate-300">0</td>
+                            <td id="statTeam2TotalHands" class="py-3 text-slate-300">0</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <!-- Detailed League Statistics Table -->
-        <div class="bg-slate-900 rounded-2xl p-4 border border-slate-800 shadow-lg">
-            <h2 class="text-xs font-bold text-slate-300 mb-3">📊 آمار کامل در حافظه</h2>
-            <table class="w-full text-xs text-center border-collapse">
-                <thead>
-                    <tr class="border-b border-slate-800 text-slate-400">
-                        <th class="py-2 text-right font-normal">عنوان آمار</th>
-                        <th class="py-2 text-emerald-400 font-bold team1NameText">تیم ما</th>
-                        <th class="py-2 text-blue-400 font-bold team2NameText">تیم حریف</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-800/60">
-                    <tr>
-                        <td class="py-2.5 text-right text-slate-300">🏆 مجموع امتیازات (بردها)</td>
-                        <td id="statTeam1Matches" class="py-2.5 font-bold text-sm text-white">0</td>
-                        <td id="statTeam2Matches" class="py-2.5 font-bold text-sm text-white">0</td>
-                    </tr>
-                    <tr>
-                        <td class="py-2.5 text-right text-slate-300">⚡ تعداد کوت (۲ امتیازی)</td>
-                        <td id="statTeam1Koot" class="py-2.5 font-bold text-amber-400">0</td>
-                        <td id="statTeam2Koot" class="py-2.5 font-bold text-amber-400">0</td>
-                    </tr>
-                    <tr>
-                        <td class="py-2.5 text-right text-slate-300">🔥 حاکم‌کوتی (۳ امتیازی)</td>
-                        <td id="statTeam1HakemKoot" class="py-2.5 font-bold text-red-400">0</td>
-                        <td id="statTeam2HakemKoot" class="py-2.5 font-bold text-red-400">0</td>
-                    </tr>
-                    <tr>
-                        <td class="py-2.5 text-right text-slate-300">✋ کل دست‌های گرفته شده</td>
-                        <td id="statTeam1TotalHands" class="py-2.5 text-slate-300">0</td>
-                        <td id="statTeam2TotalHands" class="py-2.5 text-slate-300">0</td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- TAB 3: HISTORY -->
+        <div id="tab-history" class="tab-content space-y-4 hidden">
+            <div class="bg-slate-900 rounded-2xl p-4 border border-slate-800 shadow-lg">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-xs font-bold text-slate-300">📜 تاریخچه بازی‌های اخیر</h2>
+                    <span id="totalGamesPlayed" class="text-[11px] text-slate-500">۰ بازی</span>
+                </div>
+                <div id="historyList" class="space-y-2 max-h-[60vh] overflow-y-auto text-xs"></div>
+            </div>
         </div>
 
-        <!-- Recent History Log -->
-        <div class="bg-slate-900 rounded-2xl p-4 border border-slate-800 shadow-lg">
-            <div class="flex justify-between items-center mb-3">
-                <h2 class="text-xs font-bold text-slate-300">📜 تاریخچه بازی‌ها</h2>
-                <span id="totalGamesPlayed" class="text-[11px] text-slate-500">۰ بازی</span>
+        <!-- TAB 4: SETTINGS -->
+        <div id="tab-settings" class="tab-content space-y-4 hidden">
+            <div class="bg-slate-900 rounded-2xl p-4 border border-slate-800 shadow-lg space-y-4">
+                <h2 class="text-xs font-bold text-amber-400 border-b border-slate-800 pb-2">⚙️ تنظیمات لیگ و نام تیم‌ها</h2>
+                
+                <div class="space-y-3 text-xs">
+                    <div>
+                        <label class="block text-slate-400 mb-1">نام لیگ:</label>
+                        <input type="text" id="inputLeagueName" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2.5 text-white outline-none">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-emerald-400 mb-1">نام تیم اول:</label>
+                            <input type="text" id="inputTeam1Name" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-2 text-white outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-blue-400 mb-1">نام تیم دوم:</label>
+                            <input type="text" id="inputTeam2Name" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-2 text-white outline-none">
+                        </div>
+                    </div>
+                    <button onclick="saveTeamNames()" class="w-full bg-emerald-600 active:bg-emerald-500 text-white font-bold py-2.5 rounded-lg shadow">
+                        ذخیره نام‌ها و بروزرسانی ابری
+                    </button>
+                </div>
+
+                <hr class="border-slate-800">
+
+                <div class="space-y-2.5 text-xs">
+                    <button onclick="announceLeagueChampion()" class="w-full bg-gradient-to-l from-amber-500 to-orange-600 text-slate-950 font-bold py-3 rounded-lg shadow">
+                        🏆 پایان ماه و اعلام قهرمان لیگ
+                    </button>
+                    <button onclick="hardResetLeague()" class="w-full bg-red-950/50 text-red-400 border border-red-900/40 py-2.5 rounded-lg">
+                        🗑️ ریست کامل و شروع لیگ جدید
+                    </button>
+                </div>
             </div>
-            <div id="historyList" class="space-y-2 max-h-48 overflow-y-auto text-xs"></div>
         </div>
 
     </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur border-t border-slate-800 z-50">
+        <div class="max-w-md mx-auto grid grid-cols-4 py-2 text-center text-xs">
+            <button onclick="switchTab('game')" id="nav-game" class="flex flex-col items-center gap-1 text-amber-400 font-bold">
+                <span class="text-base">🎲</span>
+                <span>شمارش</span>
+            </button>
+            <button onclick="switchTab('stats')" id="nav-stats" class="flex flex-col items-center gap-1 text-slate-400">
+                <span class="text-base">📊</span>
+                <span>آمار لیگ</span>
+            </button>
+            <button onclick="switchTab('history')" id="nav-history" class="flex flex-col items-center gap-1 text-slate-400">
+                <span class="text-base">📜</span>
+                <span>تاریخچه</span>
+            </button>
+            <button onclick="switchTab('settings')" id="nav-settings" class="flex flex-col items-center gap-1 text-slate-400">
+                <span class="text-base">⚙️</span>
+                <span>تنظیمات</span>
+            </button>
+        </div>
+    </nav>
 
     <!-- Win Announcement Modal -->
     <div id="winModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
@@ -185,74 +249,14 @@
         </div>
     </div>
 
-    <!-- Settings & JSONBin Modal -->
-    <div id="settingsModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-3">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-4 space-y-4 max-h-[92vh] overflow-y-auto">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
-                <h3 class="font-bold text-white text-sm">⚙️ تنظیمات لیگ و اتصال ابری</h3>
-                <button onclick="toggleModal('settingsModal')" class="text-slate-400 text-lg px-2">✕</button>
-            </div>
-
-            <!-- Team Names -->
-            <div class="space-y-2 text-xs">
-                <div class="font-bold text-amber-400">۱. نام لیگ و تیم‌ها</div>
-                <input type="text" id="inputLeagueName" placeholder="نام لیگ" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2.5 text-white outline-none">
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="text" id="inputTeam1Name" placeholder="نام تیم اول" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2.5 text-emerald-400 outline-none">
-                    <input type="text" id="inputTeam2Name" placeholder="نام تیم دوم" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2.5 text-blue-400 outline-none">
-                </div>
-            </div>
-
-            <hr class="border-slate-800">
-
-            <!-- JSONBin.io Cloud Config -->
-            <div class="space-y-2 text-xs">
-                <div class="font-bold text-emerald-400 flex justify-between items-center">
-                    <span>۲. اتصال به JSONBin.io</span>
-                    <a href="https://jsonbin.io/app/api-keys" target="_blank" class="text-[11px] text-amber-400 underline">گرفتن کلید رایگان</a>
-                </div>
-                <div>
-                    <label class="block text-slate-400 mb-1">X-Master-Key:</label>
-                    <input type="password" id="inputApiKey" placeholder="$2a$10$..." dir="ltr" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white outline-none">
-                </div>
-                <div>
-                    <label class="block text-slate-400 mb-1">Bin ID (شناسه مخزن):</label>
-                    <div class="flex gap-1.5">
-                        <input type="text" id="inputBinId" placeholder="خودکار ساخته می‌شود" dir="ltr" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white outline-none">
-                        <button onclick="createNewBin()" id="createBinBtn" class="bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-2 rounded-lg whitespace-nowrap font-bold">
-                            ✨ ساخت خودکار
-                        </button>
-                    </div>
-                </div>
-
-                <button onclick="saveAllSettings()" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-lg shadow mt-2">
-                    ذخیره تنظیمات و همگام‌سازی
-                </button>
-
-                <button onclick="copyMagicInviteLink()" class="w-full bg-slate-800 text-amber-400 border border-slate-700 font-bold py-2.5 rounded-lg mt-1 flex items-center justify-center gap-1">
-                    🔗 کپی لینک دعوت دوستان (اتصال خودکار)
-                </button>
-            </div>
-
-            <hr class="border-slate-800">
-
-            <!-- League Actions -->
-            <div class="space-y-2 text-xs">
-                <button onclick="announceLeagueChampion()" class="w-full bg-gradient-to-l from-amber-500 to-orange-600 text-slate-950 font-bold py-2.5 rounded-lg shadow">
-                    🏆 پایان ماه و اعلام قهرمان لیگ
-                </button>
-                <button onclick="hardResetLeague()" class="w-full bg-red-950/50 text-red-400 border border-red-900/40 py-2 rounded-lg mt-2">
-                    🗑️ ریست کامل و شروع لیگ جدید
-                </button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        const STORAGE_KEY = 'hokm_league_jsonbin_v2';
-        const CLOUD_CONFIG_KEY = 'hokm_jsonbin_config_v2';
+        // اتصال دائمی به JSONBin شما
+        const cloudConfig = {
+            binId: '$2a$10$gkWQlJ1UXb6FRAgFI3qv/uuj24YldtvncWPMQuUR6hFgSJTBWOxze',
+            apiKey: '$2a$10$gyk8xbmaosixxVnlkPXf4evqOcL8/MA5vZgdDxPK9pP4cWMddfAdK'
+        };
 
-        let cloudConfig = { binId: '', apiKey: '' };
+        const STORAGE_KEY = 'hokm_league_multitab_v1';
 
         let state = {
             leagueName: 'لیگ ماهانه حکم',
@@ -267,106 +271,325 @@
             matchHistory: []
         };
 
-        function isCloudConfigured() {
-            return cloudConfig.binId && cloudConfig.apiKey;
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            ['game', 'stats', 'history', 'settings'].forEach(id => {
+                const btn = document.getElementById(`nav-${id}`);
+                if (id === tabId) {
+                    btn.className = "flex flex-col items-center gap-1 text-amber-400 font-bold";
+                } else {
+                    btn.className = "flex flex-col items-center gap-1 text-slate-400";
+                }
+            });
+            window.scrollTo(0, 0);
         }
 
         function setCloudBadge(status, text) {
             const dot = document.getElementById('cloudStatusDot');
             const label = document.getElementById('cloudStatusText');
-            const refreshBtn = document.getElementById('refreshCloudBtn');
-
-            if (!isCloudConfigured()) {
-                dot.className = 'w-1.5 h-1.5 rounded-full bg-slate-500';
-                label.innerText = 'حافظه گوشی';
-                refreshBtn.classList.add('hidden');
-                return;
-            }
-
-            refreshBtn.classList.remove('hidden');
             if (status === 'syncing') {
                 dot.className = 'w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping';
                 label.innerText = 'در حال سینک...';
             } else if (status === 'online') {
                 dot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-400';
-                label.innerText = text || 'آنلاین';
-            } else if (status === 'error') {
+                label.innerText = text || 'ابری (متصل)';
+            } else {
                 dot.className = 'w-1.5 h-1.5 rounded-full bg-red-500';
                 label.innerText = 'خطای اتصال';
             }
         }
 
         async function initApp() {
-            // بررسی لینک جادویی دعوت دوستان از URL
-            const params = new URLSearchParams(window.location.search);
-            const urlBin = params.get('bin');
-            const urlKey = params.get('key');
-
-            if (urlBin && urlKey) {
-                cloudConfig = { binId: urlBin, apiKey: atob(urlKey) };
-                localStorage.setItem(CLOUD_CONFIG_KEY, JSON.stringify(cloudConfig));
-                window.history.replaceState({}, document.title, window.location.pathname);
-            } else {
-                const savedCloud = localStorage.getItem(CLOUD_CONFIG_KEY);
-                if (savedCloud) {
-                    try { cloudConfig = { ...cloudConfig, ...JSON.parse(savedCloud) }; } catch (e) {}
-                }
-            }
-
             const savedState = localStorage.getItem(STORAGE_KEY);
             if (savedState) {
                 try { state = JSON.parse(savedState); } catch (e) {}
             }
-
             updateUI();
-
-            if (isCloudConfigured()) {
-                await syncFromCloud(false);
-            } else {
-                setCloudBadge('local');
-            }
+            await syncFromCloud(false);
         }
 
-        function copyMagicInviteLink() {
-            const bin = document.getElementById('inputBinId').value.trim() || cloudConfig.binId;
-            const key = document.getElementById('inputApiKey').value.trim() || cloudConfig.apiKey;
-            if (!bin || !key) {
-                alert('ابتدا کلید را وارد کرده و دکمه «ساخت خودکار» را بزنید تا Bin ID ساخته شود.');
-                return;
-            }
-            const magicUrl = `${window.location.origin}${window.location.pathname}?bin=${encodeURIComponent(bin)}&key=${encodeURIComponent(btoa(key))}`;
-            navigator.clipboard.writeText(magicUrl).then(() => {
-                alert('لینک اتصال کپی شد! آن را برای دوستانتان در تلگرام یا واتساپ بفرستید تا مستقیم به همین لیگ وصل شوند.');
-            });
-        }
-
-        async function createNewBin() {
-            const apiKey = document.getElementById('inputApiKey').value.trim();
-            if (!apiKey) {
-                alert('لطفاً ابتدا X-Master-Key را در کادر بالا Paste کنید.');
-                return;
-            }
-
-            const btn = document.getElementById('createBinBtn');
-            btn.innerText = '⏳ صبر کنید...';
-            btn.disabled = true;
-
+        async function pushToCloud() {
+            setCloudBadge('syncing');
             try {
-                const res = await fetch('https://api.jsonbin.io/v3/b', {
-                    method: 'POST',
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${cloudConfig.binId}`, {
+                    method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-Master-Key': apiKey,
-                        'X-Bin-Name': 'Hokm_League'
+                        'X-Master-Key': cloudConfig.apiKey
                     },
                     body: JSON.stringify(state)
                 });
+                setCloudBadge(res.ok ? 'online' : 'error', res.ok ? 'ابری (متصل)' : 'خطا');
+            } catch (err) {
+                setCloudBadge('error');
+            }
+        }
 
-                if (!res.ok) throw new Error('خطا');
-                const data = await res.json();
+        async function syncFromCloud(manual = false) {
+            setCloudBadge('syncing');
+            try {
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${cloudConfig.binId}/latest`, {
+                    headers: { 'X-Master-Key': cloudConfig.apiKey }
+                });
+                if (!res.ok) throw new Error('Fetch failed');
+                const result = await res.json();
+                if (result && result.record && result.record.teams) {
+                    state = result.record;
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                    updateUI();
+                    setCloudBadge('online', 'ابری (متصل)');
+                }
+            } catch (err) {
+                setCloudBadge('error');
+                if (manual) alert('خطا در دریافت اطلاعات از سرور.');
+            }
+        }
 
-                if (data.metadata && data.metadata.id) {
-                    document.getElementById('inputBinId').value = data.metadata.id;
-                    cloudConfig.binId = data.metadata.id;
-                    cloudConfig.apiKey = apiKey;
-                    localStorage.setItem(CLOUD_CONFIG_KEY, JSON.stringify(cloudConfi
+        function saveState(syncCloud = true) {
+            state.updatedAt = new Date().toISOString();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            updateUI();
+            if (syncCloud) pushToCloud();
+        }
+
+        function setHakem(teamId) {
+            state.currentHakem = teamId;
+            saveState(true);
+        }
+
+        function scoreHand(teamId) {
+            state.handHistoryStack.push(teamId);
+            state.teams[teamId].currentHands += 1;
+            state.teams[teamId].totalHands += 1;
+
+            if (state.teams[teamId].currentHands >= 7) {
+                const loserId = teamId === 1 ? 2 : 1;
+                const loserHands = state.teams[loserId].currentHands;
+                
+                let pointsAwarded = 1;
+                let winType = 'برد عادی (۱ امتیاز)';
+                let icon = '🎉';
+
+                if (loserHands === 0) {
+                    if (state.currentHakem === loserId) {
+                        pointsAwarded = 3;
+                        winType = 'حاکم‌کوتی! (۳ امتیاز)';
+                        icon = '🔥👑';
+                        state.teams[teamId].hakemKootCount += 1;
+                    } else {
+                        pointsAwarded = 2;
+                        winType = 'کوت! (۲ امتیاز)';
+                        icon = '⚡';
+                        state.teams[teamId].kootCount += 1;
+                    }
+                }
+
+                state.teams[teamId].matchWins += pointsAwarded;
+
+                const now = new Date();
+                const timeStr = now.toLocaleDateString('fa-IR') + ' - ' + now.toLocaleTimeString('fa-IR', {hour: '2-digit', minute:'2-digit'});
+                state.matchHistory.unshift({
+                    winner: state.teams[teamId].name,
+                    loser: state.teams[loserId].name,
+                    score: `7 - ${loserHands}`,
+                    type: winType,
+                    points: pointsAwarded,
+                    date: timeStr
+                });
+
+                if (state.matchHistory.length > 60) state.matchHistory.pop();
+
+                state.teams[1].currentHands = 0;
+                state.teams[2].currentHands = 0;
+                state.handHistoryStack = [];
+                state.currentHakem = teamId;
+
+                saveState(true);
+                showWinModal(state.teams[teamId].name, winType, `نتیجه دست: ۷ بر ${loserHands}`, icon);
+            } else {
+                saveState(true);
+            }
+        }
+
+        function undoLastHand() {
+            if (state.handHistoryStack.length === 0) return;
+            const lastWinner = state.handHistoryStack.pop();
+            if (state.teams[lastWinner].currentHands > 0) {
+                state.teams[lastWinner].currentHands -= 1;
+                state.teams[lastWinner].totalHands = Math.max(0, state.teams[lastWinner].totalHands - 1);
+            }
+            saveState(true);
+        }
+
+        function resetCurrentMatch() {
+            if (state.teams[1].currentHands === 0 && state.teams[2].currentHands === 0) return;
+            if (confirm('دست‌های بازی فعلی صفر شود؟')) {
+                state.teams[1].totalHands -= state.teams[1].currentHands;
+                state.teams[2].totalHands -= state.teams[2].currentHands;
+                state.teams[1].currentHands = 0;
+                state.teams[2].currentHands = 0;
+                state.handHistoryStack = [];
+                saveState(true);
+            }
+        }
+
+        function renderSeeds(count, colorClass) {
+            let html = '';
+            for (let i = 0; i < 7; i++) {
+                html += i < count 
+                    ? `<span class="w-2.5 h-2.5 rounded-full ${colorClass}"></span>` 
+                    : `<span class="w-2 h-2 rounded-full bg-slate-800"></span>`;
+            }
+            return html;
+        }
+
+        function updateUI() {
+            document.getElementById('topLeagueTitle').innerText = state.leagueName;
+            document.getElementById('leagueNameDisplay').innerText = '🏆 ' + state.leagueName;
+            
+            const start = new Date(state.startDate);
+            const now = new Date();
+            const diffDays = Math.max(1, Math.ceil((now - start) / (1000 * 60 * 60 * 24)));
+            document.getElementById('leagueDaysDisplay').innerText = `روز ${diffDays.toLocaleString('fa-IR')} از ۳۰`;
+
+            document.querySelectorAll('.team1NameText').forEach(el => el.innerText = state.teams[1].name);
+            document.querySelectorAll('.team2NameText').forEach(el => el.innerText = state.teams[2].name);
+            document.getElementById('team1NameLeague').innerText = state.teams[1].name;
+            document.getElementById('team2NameLeague').innerText = state.teams[2].name;
+
+            const w1 = state.teams[1].matchWins;
+            const w2 = state.teams[2].matchWins;
+            document.getElementById('team1MatchWins').innerText = w1.toLocaleString('fa-IR');
+            document.getElementById('team2MatchWins').innerText = w2.toLocaleString('fa-IR');
+
+            const badge = document.getElementById('leaderBadge');
+            if (w1 > w2) {
+                badge.innerText = `پیشتاز: ${state.teams[1].name}`;
+                badge.className = 'mt-1 text-[10px] text-emerald-400 font-semibold';
+            } else if (w2 > w1) {
+                badge.innerText = `پیشتاز: ${state.teams[2].name}`;
+                badge.className = 'mt-1 text-[10px] text-blue-400 font-semibold';
+            } else {
+                badge.innerText = 'مساوی';
+                badge.className = 'mt-1 text-[10px] text-amber-400';
+            }
+
+            const h1Btn = document.getElementById('hakemTeam1Btn');
+            const h2Btn = document.getElementById('hakemTeam2Btn');
+            if (state.currentHakem === 1) {
+                h1Btn.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border bg-amber-500/20 border-amber-500 text-amber-300";
+                h2Btn.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border bg-slate-900 border-slate-800 text-slate-500";
+            } else {
+                h2Btn.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border bg-amber-500/20 border-amber-500 text-amber-300";
+                h1Btn.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border bg-slate-900 border-slate-800 text-slate-500";
+            }
+
+            document.getElementById('team1CurrentHands').innerText = state.teams[1].currentHands.toLocaleString('fa-IR');
+            document.getElementById('team2CurrentHands').innerText = state.teams[2].currentHands.toLocaleString('fa-IR');
+            document.getElementById('team1Seeds').innerHTML = renderSeeds(state.teams[1].currentHands, 'bg-emerald-400 shadow-sm shadow-emerald-400');
+            document.getElementById('team2Seeds').innerHTML = renderSeeds(state.teams[2].currentHands, 'bg-blue-400 shadow-sm shadow-blue-400');
+
+            document.getElementById('undoBtn').disabled = state.handHistoryStack.length === 0;
+
+            document.getElementById('statTeam1Matches').innerText = state.teams[1].matchWins.toLocaleString('fa-IR');
+            document.getElementById('statTeam2Matches').innerText = state.teams[2].matchWins.toLocaleString('fa-IR');
+            document.getElementById('statTeam1Koot').innerText = state.teams[1].kootCount.toLocaleString('fa-IR');
+            document.getElementById('statTeam2Koot').innerText = state.teams[2].kootCount.toLocaleString('fa-IR');
+            document.getElementById('statTeam1HakemKoot').innerText = state.teams[1].hakemKootCount.toLocaleString('fa-IR');
+            document.getElementById('statTeam2HakemKoot').innerText = state.teams[2].hakemKootCount.toLocaleString('fa-IR');
+            document.getElementById('statTeam1TotalHands').innerText = state.teams[1].totalHands.toLocaleString('fa-IR');
+            document.getElementById('statTeam2TotalHands').innerText = state.teams[2].totalHands.toLocaleString('fa-IR');
+
+            document.getElementById('totalGamesPlayed').innerText = `${state.matchHistory.length.toLocaleString('fa-IR')} بازی`;
+            const historyContainer = document.getElementById('historyList');
+            if (state.matchHistory.length === 0) {
+                historyContainer.innerHTML = `<div class="text-slate-500 text-center py-6">هنوز بازی کاملی ثبت نشده است.</div>`;
+            } else {
+                historyContainer.innerHTML = state.matchHistory.map(item => `
+                    <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 flex justify-between items-center">
+                        <div>
+                            <span class="font-bold text-slate-200">${item.winner}</span>
+                            <span class="text-slate-500 text-[11px]"> مقابل ${item.loser} (${item.score})</span>
+                            <div class="text-[10px] text-slate-500 mt-0.5">${item.date}</div>
+                        </div>
+                        <span class="px-2 py-1 rounded-md text-[10px] font-bold ${item.points === 3 ? 'bg-red-500/20 text-red-300 border border-red-500/30' : item.points === 2 ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-slate-800 text-slate-300'}">
+                            ${item.type}
+                        </span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function showWinModal(winnerName, winType, scoreDesc, icon) {
+            document.getElementById('winModalIcon').innerText = icon;
+            document.getElementById('winModalTitle').innerText = `${winnerName}`;
+            document.getElementById('winModalDesc').innerText = `${winType} | ${scoreDesc}`;
+            document.getElementById('winModal').classList.remove('hidden');
+            document.getElementById('winModal').classList.add('flex');
+        }
+
+        function closeWinModal() {
+            document.getElementById('winModal').classList.add('hidden');
+            document.getElementById('winModal').classList.remove('flex');
+        }
+
+        function saveTeamNames() {
+            const lName = document.getElementById('inputLeagueName').value.trim();
+            const t1 = document.getElementById('inputTeam1Name').value.trim();
+            const t2 = document.getElementById('inputTeam2Name').value.trim();
+
+            if (lName) state.leagueName = lName;
+            if (t1) state.teams[1].name = t1;
+            if (t2) state.teams[2].name = t2;
+
+            saveState(true);
+            switchTab('game');
+            alert('تغییرات با موفقیت ذخیره شد!');
+        }
+
+        function announceLeagueChampion() {
+            const t1 = state.teams[1];
+            const t2 = state.teams[2];
+            let title = '', desc = '';
+
+            if (t1.matchWins > t2.matchWins) {
+                title = `🏆 قهرمان: ${t1.name}`;
+                desc = `با ${t1.matchWins} امتیاز (${t1.kootCount} کوت و ${t1.hakemKootCount} حاکم‌کوتی) در برابر ${t2.matchWins} امتیاز ${t2.name}`;
+            } else if (t2.matchWins > t1.matchWins) {
+                title = `🏆 قهرمان: ${t2.name}`;
+                desc = `با ${t2.matchWins} امتیاز (${t2.kootCount} کوت و ${t2.hakemKootCount} حاکم‌کوتی) در برابر ${t1.matchWins} امتیاز ${t1.name}`;
+            } else {
+                title = `🤝 لیگ مساوی!`;
+                desc = `هر دو تیم با ${t1.matchWins} امتیاز برابرند!`;
+            }
+
+            showWinModal(title, desc, `کل دست‌های بازی شده: ${t1.totalHands + t2.totalHands}`, '👑');
+        }
+
+        function hardResetLeague() {
+            if (confirm('آیا مطمئن هستید؟ کل آمار پاک شده و لیگ جدید شروع می‌شود.')) {
+                const t1Name = state.teams[1].name;
+                const t2Name = state.teams[2].name;
+                state = {
+                    leagueName: state.leagueName,
+                    startDate: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    teams: {
+                        1: { name: t1Name, currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 },
+                        2: { name: t2Name, currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 }
+                    },
+                    currentHakem: 1,
+                    handHistoryStack: [],
+                    matchHistory: []
+                };
+                saveState(true);
+                switchTab('game');
+            }
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
