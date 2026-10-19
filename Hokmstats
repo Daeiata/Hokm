@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f172a">
+    <title>حکم‌شمار و لیگ ابری</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <style>
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .suit-bg {
+            background-image: radial-gradient(#1e293b 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="suit-bg min-h-screen pb-12">
+
+    <!-- Header -->
+    <header class="bg-slate-900/95 backdrop-blur border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-md mx-auto px-3 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-1.5">
+                <span class="text-lg text-red-500">♥️</span>
+                <h1 class="text-sm font-bold bg-gradient-to-l from-amber-400 to-orange-500 bg-clip-text text-transparent">لیگ حکم</h1>
+                <span id="cloudStatusBadge" onclick="syncFromCloud(true)" class="cursor-pointer text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 flex items-center gap-1">
+                    <span id="cloudStatusDot" class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+                    <span id="cloudStatusText">حافظه گوشی</span>
+                </span>
+            </div>
+            <div class="flex items-center gap-1">
+                <button onclick="syncFromCloud(true)" id="refreshCloudBtn" class="hidden text-xs bg-slate-800 active:bg-slate-700 text-emerald-400 px-2 py-1.5 rounded-lg border border-slate-700">
+                    🔄 بروزرسانی
+                </button>
+                <button onclick="toggleModal('settingsModal')" class="text-xs bg-slate-800 active:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg border border-slate-700">
+                    ⚙️ تنظیمات
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-md mx-auto px-3 mt-4 space-y-4">
+
+        <!-- League Banner -->
+        <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-4 border border-slate-700/80 shadow-lg">
+            <div class="flex justify-between items-center mb-2">
+                <span id="leagueNameDisplay" class="text-sm font-semibold text-amber-400">🏆 لیگ ماهانه حکم</span>
+                <span id="leagueDaysDisplay" class="text-xs bg-slate-950/60 text-slate-400 px-2.5 py-1 rounded-full border border-slate-800">روز ۱ از ۳۰</span>
+            </div>
+            <div class="grid grid-cols-3 items-center text-center bg-slate-950/40 rounded-xl p-3 border border-slate-800/60">
+                <div>
+                    <div id="team1NameLeague" class="text-xs text-slate-400 truncate">تیم ما</div>
+                    <div id="team1MatchWins" class="text-3xl font-black text-emerald-400 mt-1">0</div>
+                    <div class="text-[10px] text-slate-500">امتیاز کل</div>
+                </div>
+                <div class="text-xs font-bold text-slate-500">
+                    VS
+                    <div class="mt-1 text-[10px] text-amber-500/80" id="leaderBadge">مساوی</div>
+                </div>
+                <div>
+                    <div id="team2NameLeague" class="text-xs text-slate-400 truncate">تیم حریف</div>
+                    <div id="team2MatchWins" class="text-3xl font-black text-blue-400 mt-1">0</div>
+                    <div class="text-[10px] text-slate-500">امتیاز کل</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Match Scoreboard (7 Hands) -->
+        <div class="bg-slate-900 rounded-2xl p-4 border border-slate-800 shadow-xl">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                    شمارش دست جاری (تا ۷)
+                </h2>
+                <button onclick="undoLastHand()" id="undoBtn" class="text-xs text-amber-400 disabled:opacity-30 transition flex items-center gap-1" disabled>
+                    ↩️ برگشت دست قبل
+                </button>
+            </div>
+
+            <!-- Hakem Selection -->
+            <div class="bg-slate-950/70 p-2.5 rounded-xl border border-slate-800/80 mb-4">
+                <div class="text-[11px] text-slate-400 text-center mb-2">👑 <span class="text-amber-400 font-semibold">حاکم</span> این دست کدام تیم است؟</div>
+                <div class="grid grid-cols-2 gap-2">
+                    <button id="hakemTeam1Btn" onclick="setHakem(1)" class="py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border">
+                        👑 <span class="team1NameText">تیم ما</span>
+                    </button>
+                    <button id="hakemTeam2Btn" onclick="setHakem(2)" class="py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border">
+                        👑 <span class="team2NameText">تیم حریف</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hands Counter -->
+            <div class="grid grid-cols-2 gap-3 text-center">
+                <!-- Team 1 -->
+                <div class="bg-slate-950/50 p-3.5 rounded-2xl border border-emerald-500/20 flex flex-col items-center">
+                    <h3 class="team1NameText font-bold text-emerald-400 text-sm mb-1 truncate w-full">تیم ما</h3>
+                    <div id="team1CurrentHands" class="text-6xl font-black text-white my-2">0</div>
+                    <div id="team1Seeds" class="flex gap-1 h-4 mb-3 items-center justify-center"></div>
+                    <button onclick="scoreHand(1)" class="w-full bg-emerald-600 active:scale-95 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-emerald-900/30 transition text-sm">
+                        + ثبت دست
+                    </button>
+                </div>
+
+                <!-- Team 2 -->
+                <div class="bg-slate-950/50 p-3.5 rounded-2xl border border-blue-500/20 flex flex-col items-center">
+                    <h3 class="team2NameText font-bold text-blue-400 text-sm mb-1 truncate w-full">تیم حریف</h3>
+                    <div id="team2CurrentHands" class="text-6xl font-black text-white my-2">0</div>
+                    <div id="team2Seeds" class="flex gap-1 h-4 mb-3 items-center justify-center"></div>
+                    <button onclick="scoreHand(2)" class="w-full bg-blue-600 active:scale-95 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-900/30 transition text-sm">
+                        + ثبت دست
+                    </button>
+                </div>
+            </div>
+
+            <div class="mt-3 text-center">
+                <button onclick="resetCurrentMatch()" class="text-[11px] text-slate-500 active:text-red-400 py-1">
+                    صفر کردن دست جاری
+                </button>
+            </div>
+        </div>
+
+        <!-- Detailed League Statistics Table -->
+        <div class="bg-slate-900 rounded-2xl p-4 border border-slate-800 shadow-lg">
+            <h2 class="text-xs font-bold text-slate-300 mb-3">📊 آمار کامل در حافظه</h2>
+            <table class="w-full text-xs text-center border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-800 text-slate-400">
+                        <th class="py-2 text-right font-normal">عنوان آمار</th>
+                        <th class="py-2 text-emerald-400 font-bold team1NameText">تیم ما</th>
+                        <th class="py-2 text-blue-400 font-bold team2NameText">تیم حریف</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/60">
+                    <tr>
+                        <td class="py-2.5 text-right text-slate-300">🏆 مجموع امتیازات (بردها)</td>
+                        <td id="statTeam1Matches" class="py-2.5 font-bold text-sm text-white">0</td>
+                        <td id="statTeam2Matches" class="py-2.5 font-bold text-sm text-white">0</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 text-right text-slate-300">⚡ تعداد کوت (۲ امتیازی)</td>
+                        <td id="statTeam1Koot" class="py-2.5 font-bold text-amber-400">0</td>
+                        <td id="statTeam2Koot" class="py-2.5 font-bold text-amber-400">0</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 text-right text-slate-300">🔥 حاکم‌کوتی (۳ امتیازی)</td>
+                        <td id="statTeam1HakemKoot" class="py-2.5 font-bold text-red-400">0</td>
+                        <td id="statTeam2HakemKoot" class="py-2.5 font-bold text-red-400">0</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2.5 text-right text-slate-300">✋ کل دست‌های گرفته شده</td>
+                        <td id="statTeam1TotalHands" class="py-2.5 text-slate-300">0</td>
+                        <td id="statTeam2TotalHands" class="py-2.5 text-slate-300">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Recent History Log -->
+        <div class="bg-slate-900 rounded-2xl p-4 border border-slate-800 shadow-lg">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-xs font-bold text-slate-300">📜 تاریخچه بازی‌ها</h2>
+                <span id="totalGamesPlayed" class="text-[11px] text-slate-500">۰ بازی</span>
+            </div>
+            <div id="historyList" class="space-y-2 max-h-48 overflow-y-auto text-xs"></div>
+        </div>
+
+    </main>
+
+    <!-- Win Announcement Modal -->
+    <div id="winModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl">
+            <div id="winModalIcon" class="text-5xl mb-3">🎉</div>
+            <h3 id="winModalTitle" class="text-xl font-black text-white mb-1">پایان دست!</h3>
+            <p id="winModalDesc" class="text-sm text-amber-400 font-medium mb-5"></p>
+            <button onclick="closeWinModal()" class="w-full bg-gradient-to-l from-amber-500 to-orange-600 text-slate-950 font-black py-3 rounded-xl">
+                ادامه بازی
+            </button>
+        </div>
+    </div>
+
+    <!-- Settings & JSONBin Modal -->
+    <div id="settingsModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-3">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-4 space-y-4 max-h-[92vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
+                <h3 class="font-bold text-white text-sm">⚙️ تنظیمات لیگ و اتصال ابری</h3>
+                <button onclick="toggleModal('settingsModal')" class="text-slate-400 text-lg px-2">✕</button>
+            </div>
+
+            <!-- Team Names -->
+            <div class="space-y-2 text-xs">
+                <div class="font-bold text-amber-400">۱. نام لیگ و تیم‌ها</div>
+                <input type="text" id="inputLeagueName" placeholder="نام لیگ" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2.5 text-white outline-none">
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" id="inputTeam1Name" placeholder="نام تیم اول" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2.5 text-emerald-400 outline-none">
+                    <input type="text" id="inputTeam2Name" placeholder="نام تیم دوم" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2.5 text-blue-400 outline-none">
+                </div>
+            </div>
+
+            <hr class="border-slate-800">
+
+            <!-- JSONBin.io Cloud Config -->
+            <div class="space-y-2 text-xs">
+                <div class="font-bold text-emerald-400 flex justify-between items-center">
+                    <span>۲. اتصال به JSONBin.io</span>
+                    <a href="https://jsonbin.io/app/api-keys" target="_blank" class="text-[11px] text-amber-400 underline">گرفتن کلید رایگان</a>
+                </div>
+                <div>
+                    <label class="block text-slate-400 mb-1">X-Master-Key:</label>
+                    <input type="password" id="inputApiKey" placeholder="$2a$10$..." dir="ltr" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white outline-none">
+                </div>
+                <div>
+                    <label class="block text-slate-400 mb-1">Bin ID (شناسه مخزن):</label>
+                    <div class="flex gap-1.5">
+                        <input type="text" id="inputBinId" placeholder="خودکار ساخته می‌شود" dir="ltr" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white outline-none">
+                        <button onclick="createNewBin()" id="createBinBtn" class="bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-2 rounded-lg whitespace-nowrap font-bold">
+                            ✨ ساخت خودکار
+                        </button>
+                    </div>
+                </div>
+
+                <button onclick="saveAllSettings()" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-lg shadow mt-2">
+                    ذخیره تنظیمات و همگام‌سازی
+                </button>
+
+                <button onclick="copyMagicInviteLink()" class="w-full bg-slate-800 text-amber-400 border border-slate-700 font-bold py-2.5 rounded-lg mt-1 flex items-center justify-center gap-1">
+                    🔗 کپی لینک دعوت دوستان (اتصال خودکار)
+                </button>
+            </div>
+
+            <hr class="border-slate-800">
+
+            <!-- League Actions -->
+            <div class="space-y-2 text-xs">
+                <button onclick="announceLeagueChampion()" class="w-full bg-gradient-to-l from-amber-500 to-orange-600 text-slate-950 font-bold py-2.5 rounded-lg shadow">
+                    🏆 پایان ماه و اعلام قهرمان لیگ
+                </button>
+                <button onclick="hardResetLeague()" class="w-full bg-red-950/50 text-red-400 border border-red-900/40 py-2 rounded-lg mt-2">
+                    🗑️ ریست کامل و شروع لیگ جدید
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'hokm_league_jsonbin_v2';
+        const CLOUD_CONFIG_KEY = 'hokm_jsonbin_config_v2';
+
+        let cloudConfig = { binId: '', apiKey: '' };
+
+        let state = {
+            leagueName: 'لیگ ماهانه حکم',
+            startDate: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            teams: {
+                1: { name: 'تیم ما', currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 },
+                2: { name: 'تیم حریف', currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 }
+            },
+            currentHakem: 1,
+            handHistoryStack: [],
+            matchHistory: []
+        };
+
+        function isCloudConfigured() {
+            return cloudConfig.binId && cloudConfig.apiKey;
+        }
+
+        function setCloudBadge(status, text) {
+            const dot = document.getElementById('cloudStatusDot');
+            const label = document.getElementById('cloudStatusText');
+            const refreshBtn = document.getElementById('refreshCloudBtn');
+
+            if (!isCloudConfigured()) {
+                dot.className = 'w-1.5 h-1.5 rounded-full bg-slate-500';
+                label.innerText = 'حافظه گوشی';
+                refreshBtn.classList.add('hidden');
+                return;
+            }
+
+            refreshBtn.classList.remove('hidden');
+            if (status === 'syncing') {
+                dot.className = 'w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping';
+                label.innerText = 'در حال سینک...';
+            } else if (status === 'online') {
+                dot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-400';
+                label.innerText = text || 'آنلاین';
+            } else if (status === 'error') {
+                dot.className = 'w-1.5 h-1.5 rounded-full bg-red-500';
+                label.innerText = 'خطای اتصال';
+            }
+        }
+
+        async function initApp() {
+            // بررسی لینک جادویی دعوت دوستان از URL
+            const params = new URLSearchParams(window.location.search);
+            const urlBin = params.get('bin');
+            const urlKey = params.get('key');
+
+            if (urlBin && urlKey) {
+                cloudConfig = { binId: urlBin, apiKey: atob(urlKey) };
+                localStorage.setItem(CLOUD_CONFIG_KEY, JSON.stringify(cloudConfig));
+                window.history.replaceState({}, document.title, window.location.pathname);
+            } else {
+                const savedCloud = localStorage.getItem(CLOUD_CONFIG_KEY);
+                if (savedCloud) {
+                    try { cloudConfig = { ...cloudConfig, ...JSON.parse(savedCloud) }; } catch (e) {}
+                }
+            }
+
+            const savedState = localStorage.getItem(STORAGE_KEY);
+            if (savedState) {
+                try { state = JSON.parse(savedState); } catch (e) {}
+            }
+
+            updateUI();
+
+            if (isCloudConfigured()) {
+                await syncFromCloud(false);
+            } else {
+                setCloudBadge('local');
+            }
+        }
+
+        function copyMagicInviteLink() {
+            const bin = document.getElementById('inputBinId').value.trim() || cloudConfig.binId;
+            const key = document.getElementById('inputApiKey').value.trim() || cloudConfig.apiKey;
+            if (!bin || !key) {
+                alert('ابتدا کلید را وارد کرده و دکمه «ساخت خودکار» را بزنید تا Bin ID ساخته شود.');
+                return;
+            }
+            const magicUrl = `${window.location.origin}${window.location.pathname}?bin=${encodeURIComponent(bin)}&key=${encodeURIComponent(btoa(key))}`;
+            navigator.clipboard.writeText(magicUrl).then(() => {
+                alert('لینک اتصال کپی شد! آن را برای دوستانتان در تلگرام یا واتساپ بفرستید تا مستقیم به همین لیگ وصل شوند.');
+            });
+        }
+
+        async function createNewBin() {
+            const apiKey = document.getElementById('inputApiKey').value.trim();
+            if (!apiKey) {
+                alert('لطفاً ابتدا X-Master-Key را در کادر بالا Paste کنید.');
+                return;
+            }
+
+            const btn = document.getElementById('createBinBtn');
+            btn.innerText = '⏳ صبر کنید...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('https://api.jsonbin.io/v3/b', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': apiKey,
+                        'X-Bin-Name': 'Hokm_League'
+                    },
+                    body: JSON.stringify(state)
+                });
+
+                if (!res.ok) throw new Error('خطا');
+                const data = await res.json();
+
+                if (data.metadata && data.metadata.id) {
+                    document.getElementById('inputBinId').value = data.metadata.id;
+                    cloudConfig.binId = data.metadata.id;
+                    cloudConfig.apiKey = apiKey;
+                    localStorage.setItem(CLOUD_CONFIG_KEY, JSON.stringify(cloudConfi
