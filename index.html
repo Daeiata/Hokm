@@ -46,7 +46,6 @@
 
         <!-- TAB 1: GAME / COUNTER -->
         <div id="tab-game" class="tab-content space-y-4">
-            <!-- League Banner Card -->
             <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-4 border border-slate-700/80 shadow-lg">
                 <div class="flex justify-between items-center mb-2">
                     <span id="leagueNameDisplay" class="text-sm font-semibold text-amber-400">🏆 لیگ ماهانه حکم</span>
@@ -70,7 +69,6 @@
                 </div>
             </div>
 
-            <!-- Current Match Scoreboard (7 Hands) -->
             <div class="bg-slate-900 rounded-2xl p-4 border border-slate-800 shadow-xl">
                 <div class="flex justify-between items-center mb-3">
                     <h2 class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
@@ -82,7 +80,6 @@
                     </button>
                 </div>
 
-                <!-- Hakem Selection -->
                 <div class="bg-slate-950/70 p-2.5 rounded-xl border border-slate-800/80 mb-4">
                     <div class="text-[11px] text-slate-400 text-center mb-2">👑 <span class="text-amber-400 font-semibold">حاکم</span> این دست کدام تیم است؟</div>
                     <div class="grid grid-cols-2 gap-2">
@@ -95,9 +92,7 @@
                     </div>
                 </div>
 
-                <!-- Hands Counter -->
                 <div class="grid grid-cols-2 gap-3 text-center">
-                    <!-- Team 1 -->
                     <div class="bg-slate-950/50 p-3.5 rounded-2xl border border-emerald-500/20 flex flex-col items-center">
                         <h3 class="team1NameText font-bold text-emerald-400 text-sm mb-1 truncate w-full">تیم ما</h3>
                         <div id="team1CurrentHands" class="text-6xl font-black text-white my-2">0</div>
@@ -107,7 +102,6 @@
                         </button>
                     </div>
 
-                    <!-- Team 2 -->
                     <div class="bg-slate-950/50 p-3.5 rounded-2xl border border-blue-500/20 flex flex-col items-center">
                         <h3 class="team2NameText font-bold text-blue-400 text-sm mb-1 truncate w-full">تیم حریف</h3>
                         <div id="team2CurrentHands" class="text-6xl font-black text-white my-2">0</div>
@@ -196,7 +190,7 @@
                         </div>
                     </div>
                     <button onclick="saveTeamNames()" class="w-full bg-emerald-600 active:bg-emerald-500 text-white font-bold py-2.5 rounded-lg shadow">
-                        ذخیره نام‌ها و سینک ابری
+                        ذخیره نام‌ها
                     </button>
                 </div>
 
@@ -250,7 +244,7 @@
     </div>
 
     <script>
-        const CLOUD_URL = 'https://api.npoint.io/49182c3dafad09715590';
+        const GIST_RAW_URL = 'https://gist.githubusercontent.com/Daeiata/1282936c1e87fc02a2f1da971cf0fbde/raw/17815af1b077c2098a0268310f531fb80ca93aa4/hokm_db.json';
 
         let state = {
             leagueName: 'لیگ حکم',
@@ -284,13 +278,13 @@
             const label = document.getElementById('cloudStatusText');
             if (status === 'syncing') {
                 dot.className = 'w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping';
-                label.innerText = 'در حال سینک...';
+                label.innerText = 'در حال بارگذاری...';
             } else if (status === 'online') {
                 dot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-400';
-                label.innerText = text || 'ابری (متصل)';
+                label.innerText = text || 'متصل (ابری)';
             } else {
                 dot.className = 'w-1.5 h-1.5 rounded-full bg-red-500';
-                label.innerText = 'خطای اتصال';
+                label.innerText = 'خطا در بارگذاری';
             }
         }
 
@@ -298,46 +292,31 @@
             await syncFromCloud(false);
         }
 
-        async function pushToCloud() {
-            setCloudBadge('syncing');
-            try {
-                const res = await fetch(CLOUD_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(state)
-                });
-                setCloudBadge(res.ok ? 'online' : 'error', res.ok ? 'ابری (متصل)' : 'خطا');
-            } catch (err) {
-                setCloudBadge('error');
-            }
-        }
-
         async function syncFromCloud(manual = false) {
             setCloudBadge('syncing');
             try {
-                const res = await fetch(CLOUD_URL);
+                const res = await fetch(GIST_RAW_URL + '?t=' + new Date().getTime());
                 if (!res.ok) throw new Error('Fetch failed');
                 const result = await res.json();
                 if (result && result.teams) {
                     state = result;
                     updateUI();
-                    setCloudBadge('online', 'ابری (متصل)');
+                    setCloudBadge('online', 'متصل (ابری)');
                 }
             } catch (err) {
                 setCloudBadge('error');
-                if (manual) alert('خطا در دریافت اطلاعات از سرور.');
+                if (manual) alert('خطا در دریافت اطلاعات از جیست.');
             }
         }
 
-        function saveState(syncCloud = true) {
+        function saveState() {
             state.updatedAt = new Date().toISOString();
             updateUI();
-            if (syncCloud) pushToCloud();
         }
 
         function setHakem(teamId) {
             state.currentHakem = teamId;
-            saveState(true);
+            saveState();
         }
 
         function scoreHand(teamId) {
@@ -387,10 +366,10 @@
                 state.handHistoryStack = [];
                 state.currentHakem = teamId;
 
-                saveState(true);
+                saveState();
                 showWinModal(state.teams[teamId].name, winType, `نتیجه دست: ۷ بر ${loserHands}`, icon);
             } else {
-                saveState(true);
+                saveState();
             }
         }
 
@@ -399,178 +378,4 @@
             const lastWinner = state.handHistoryStack.pop();
             if (state.teams[lastWinner].currentHands > 0) {
                 state.teams[lastWinner].currentHands -= 1;
-                state.teams[lastWinner].totalHands = Math.max(0, state.teams[lastWinner].totalHands - 1);
-            }
-            saveState(true);
-        }
-
-        function resetCurrentMatch() {
-            if (state.teams[1].currentHands === 0 && state.teams[2].currentHands === 0) return;
-            if (confirm('دست‌های بازی فعلی صفر شود؟')) {
-                state.teams[1].totalHands -= state.teams[1].currentHands;
-                state.teams[2].totalHands -= state.teams[2].currentHands;
-                state.teams[1].currentHands = 0;
-                state.teams[2].currentHands = 0;
-                state.handHistoryStack = [];
-                saveState(true);
-            }
-        }
-
-        function renderSeeds(count, colorClass) {
-            let html = '';
-            for (let i = 0; i < 7; i++) {
-                html += i < count 
-                    ? `<span class="w-2.5 h-2.5 rounded-full ${colorClass}"></span>` 
-                    : `<span class="w-2 h-2 rounded-full bg-slate-800"></span>`;
-            }
-            return html;
-        }
-
-        function updateUI() {
-            document.getElementById('topLeagueTitle').innerText = state.leagueName;
-            document.getElementById('leagueNameDisplay').innerText = '🏆 ' + state.leagueName;
-            
-            const start = new Date(state.startDate);
-            const now = new Date();
-            const diffDays = Math.max(1, Math.ceil((now - start) / (1000 * 60 * 60 * 24)));
-            document.getElementById('leagueDaysDisplay').innerText = `روز ${diffDays.toLocaleString('fa-IR')} از ۳۰`;
-
-            document.querySelectorAll('.team1NameText').forEach(el => el.innerText = state.teams[1].name);
-            document.querySelectorAll('.team2NameText').forEach(el => el.innerText = state.teams[2].name);
-            document.getElementById('team1NameLeague').innerText = state.teams[1].name;
-            document.getElementById('team2NameLeague').innerText = state.teams[2].name;
-
-            const w1 = state.teams[1].matchWins;
-            const w2 = state.teams[2].matchWins;
-            document.getElementById('team1MatchWins').innerText = w1.toLocaleString('fa-IR');
-            document.getElementById('team2MatchWins').innerText = w2.toLocaleString('fa-IR');
-
-            const badge = document.getElementById('leaderBadge');
-            if (w1 > w2) {
-                badge.innerText = `پیشتاز: ${state.teams[1].name}`;
-                badge.className = 'mt-1 text-[10px] text-emerald-400 font-semibold';
-            } else if (w2 > w1) {
-                badge.innerText = `پیشتاز: ${state.teams[2].name}`;
-                badge.className = 'mt-1 text-[10px] text-blue-400 font-semibold';
-            } else {
-                badge.innerText = 'مساوی';
-                badge.className = 'mt-1 text-[10px] text-amber-400';
-            }
-
-            const h1Btn = document.getElementById('hakemTeam1Btn');
-            const h2Btn = document.getElementById('hakemTeam2Btn');
-            if (state.currentHakem === 1) {
-                h1Btn.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border bg-amber-500/20 border-amber-500 text-amber-300";
-                h2Btn.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border bg-slate-900 border-slate-800 text-slate-500";
-            } else {
-                h2Btn.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border bg-amber-500/20 border-amber-500 text-amber-300";
-                h1Btn.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border bg-slate-900 border-slate-800 text-slate-500";
-            }
-
-            document.getElementById('team1CurrentHands').innerText = state.teams[1].currentHands.toLocaleString('fa-IR');
-            document.getElementById('team2CurrentHands').innerText = state.teams[2].currentHands.toLocaleString('fa-IR');
-            document.getElementById('team1Seeds').innerHTML = renderSeeds(state.teams[1].currentHands, 'bg-emerald-400 shadow-sm shadow-emerald-400');
-            document.getElementById('team2Seeds').innerHTML = renderSeeds(state.teams[2].currentHands, 'bg-blue-400 shadow-sm shadow-blue-400');
-
-            document.getElementById('undoBtn').disabled = state.handHistoryStack.length === 0;
-
-            document.getElementById('statTeam1Matches').innerText = state.teams[1].matchWins.toLocaleString('fa-IR');
-            document.getElementById('statTeam2Matches').innerText = state.teams[2].matchWins.toLocaleString('fa-IR');
-            document.getElementById('statTeam1Koot').innerText = state.teams[1].kootCount.toLocaleString('fa-IR');
-            document.getElementById('statTeam2Koot').innerText = state.teams[2].kootCount.toLocaleString('fa-IR');
-            document.getElementById('statTeam1HakemKoot').innerText = state.teams[1].hakemKootCount.toLocaleString('fa-IR');
-            document.getElementById('statTeam2HakemKoot').innerText = state.teams[2].hakemKootCount.toLocaleString('fa-IR');
-            document.getElementById('statTeam1TotalHands').innerText = state.teams[1].totalHands.toLocaleString('fa-IR');
-            document.getElementById('statTeam2TotalHands').innerText = state.teams[2].totalHands.toLocaleString('fa-IR');
-
-            document.getElementById('totalGamesPlayed').innerText = `${state.matchHistory.length.toLocaleString('fa-IR')} بازی`;
-            const historyContainer = document.getElementById('historyList');
-            if (state.matchHistory.length === 0) {
-                historyContainer.innerHTML = `<div class="text-slate-500 text-center py-6">هنوز بازی کاملی ثبت نشده است.</div>`;
-            } else {
-                historyContainer.innerHTML = state.matchHistory.map(item => `
-                    <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 flex justify-between items-center">
-                        <div>
-                            <span class="font-bold text-slate-200">${item.winner}</span>
-                            <span class="text-slate-500 text-[11px]"> مقابل ${item.loser} (${item.score})</span>
-                            <div class="text-[10px] text-slate-500 mt-0.5">${item.date}</div>
-                        </div>
-                        <span class="px-2 py-1 rounded-md text-[10px] font-bold ${item.points === 3 ? 'bg-red-500/20 text-red-300 border border-red-500/30' : item.points === 2 ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-slate-800 text-slate-300'}">
-                            ${item.type}
-                        </span>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function showWinModal(winnerName, winType, scoreDesc, icon) {
-            document.getElementById('winModalIcon').innerText = icon;
-            document.getElementById('winModalTitle').innerText = `${winnerName}`;
-            document.getElementById('winModalDesc').innerText = `${winType} | ${scoreDesc}`;
-            document.getElementById('winModal').classList.remove('hidden');
-            document.getElementById('winModal').classList.add('flex');
-        }
-
-        function closeWinModal() {
-            document.getElementById('winModal').classList.add('hidden');
-            document.getElementById('winModal').classList.remove('flex');
-        }
-
-        function saveTeamNames() {
-            const lName = document.getElementById('inputLeagueName').value.trim();
-            const t1 = document.getElementById('inputTeam1Name').value.trim();
-            const t2 = document.getElementById('inputTeam2Name').value.trim();
-
-            if (lName) state.leagueName = lName;
-            if (t1) state.teams[1].name = t1;
-            if (t2) state.teams[2].name = t2;
-
-            saveState(true);
-            switchTab('game');
-            alert('تغییرات ذخیره و روی سرور ابری سینک شد!');
-        }
-
-        function announceLeagueChampion() {
-            const t1 = state.teams[1];
-            const t2 = state.teams[2];
-            let title = '', desc = '';
-
-            if (t1.matchWins > t2.matchWins) {
-                title = `🏆 قهرمان: ${t1.name}`;
-                desc = `با ${t1.matchWins} امتیاز (${t1.kootCount} کوت و ${t1.hakemKootCount} حاکم‌کوتی) در برابر ${t2.matchWins} امتیاز ${t2.name}`;
-            } else if (t2.matchWins > t1.matchWins) {
-                title = `🏆 قهرمان: ${t2.name}`;
-                desc = `با ${t2.matchWins} امتیاز (${t2.kootCount} کوت و ${t2.hakemKootCount} حاکم‌کوتی) در برابر ${t1.matchWins} امتیاز ${t1.name}`;
-            } else {
-                title = `🤝 لیگ مساوی!`;
-                desc = `هر دو تیم با ${t1.matchWins} امتیاز برابرند!`;
-            }
-
-            showWinModal(title, desc, `کل دست‌های بازی شده: ${t1.totalHands + t2.totalHands}`, '👑');
-        }
-
-        function hardResetLeague() {
-            if (confirm('آیا مطمئن هستید؟ کل آمار پاک شده و لیگ جدید شروع می‌شود.')) {
-                const t1Name = state.teams[1].name;
-                const t2Name = state.teams[2].name;
-                state = {
-                    leagueName: state.leagueName,
-                    startDate: new Date().toISOString(),
-                    updatedAt: new Date().toISOString(),
-                    teams: {
-                        1: { name: t1Name, currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 },
-                        2: { name: t2Name, currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 }
-                    },
-                    currentHakem: 1,
-                    handHistoryStack: [],
-                    matchHistory: []
-                };
-                saveState(true);
-                switchTab('game');
-            }
-        }
-
-        window.onload = initApp;
-    </script>
-</body>
-</html>
+                state.teams[lastWinner].totalHa
