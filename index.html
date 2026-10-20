@@ -7,10 +7,8 @@
     <title>لیگ حکم</title>
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- فونت ایران‌یکان استاندارد وب با لایسنس CDN -->
+    <!-- فونت ایران‌یکان استاندارد وب با فونت پشتیبان وزیرمتن -->
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;800&display=swap">
-    
     <style>
         @font-face {
             font-family: 'IRANYekanX';
@@ -65,9 +63,9 @@
         }
     </style>
 </head>
-<body class="min-h-screen pb-24 antialiased">
+<body class="min-h-screen pb-32 antialiased">
 
-    <!-- Top App Bar (Telegram Style) -->
+    <!-- Top App Bar -->
     <header class="sticky top-0 z-40 bg-[#17212b]/95 backdrop-blur-md border-b border-[#242f3d] px-4 py-2.5 flex items-center justify-between shadow-sm">
         <div class="flex items-center gap-3">
             <div id="leagueLogoHeaderContainer" class="w-9 h-9 rounded-full overflow-hidden bg-[#242f3d] flex items-center justify-center border border-[#2b394a]">
@@ -115,7 +113,7 @@
                             <span class="team1FallbackAvatar text-emerald-400 font-bold text-xs">ت۱</span>
                             <img class="team1AvatarImg w-full h-full object-cover hidden" src="" alt="تیم ۱">
                         </div>
-                        <span id="team1NameLeague" class="text-xs font-bold text-white mt-1.5 truncate max-w-[90px]">تیم اول</span>
+                        <span id="team1NameLeague" class="text-xs font-bold text-white mt-1.5 truncate max-w-[95px]">تیم اول</span>
                         <div id="team1MatchWins" class="text-3xl font-black text-emerald-400 mt-0.5 persian-numbers">0</div>
                         <span class="text-[10px] text-[#708499]">امتیاز کل</span>
                     </div>
@@ -132,7 +130,7 @@
                             <span class="team2FallbackAvatar text-[#50a7ea] font-bold text-xs">ت۲</span>
                             <img class="team2AvatarImg w-full h-full object-cover hidden" src="" alt="تیم ۲">
                         </div>
-                        <span id="team2NameLeague" class="text-xs font-bold text-white mt-1.5 truncate max-w-[90px]">تیم دوم</span>
+                        <span id="team2NameLeague" class="text-xs font-bold text-white mt-1.5 truncate max-w-[95px]">تیم دوم</span>
                         <div id="team2MatchWins" class="text-3xl font-black text-[#50a7ea] mt-0.5 persian-numbers">0</div>
                         <span class="text-[10px] text-[#708499]">امتیاز کل</span>
                     </div>
@@ -196,9 +194,9 @@
             </div>
         </div>
 
-        <!-- TAB 2: STATS -->
+        <!-- TAB 2: STATS (با سرستون و نمایش دقیق تیم‌ها و آمار) -->
         <div id="tab-stats" class="tab-content space-y-3 hidden">
-            <div class="tg-surface rounded-2xl p-4 shadow-sm space-y-3">
+            <div class="tg-surface rounded-2xl p-4 shadow-sm space-y-3.5">
                 <div class="flex justify-between items-center">
                     <span class="text-xs font-bold text-white">آمار عملکرد تیم‌ها</span>
                     
@@ -210,35 +208,46 @@
                     </div>
                 </div>
 
-                <!-- Stats Rows -->
+                <!-- سرستون مشخص‌کننده دو تیم همراه با آواتار و نام -->
+                <div class="grid grid-cols-12 items-center bg-[#0e1621] rounded-xl p-2.5 border border-[#242f3d]">
+                    <div class="col-span-6 text-[11px] font-bold text-[#708499]">شاخص مقایسه</div>
+                    <div class="col-span-3 flex items-center justify-center gap-1.5">
+                        <div class="w-5 h-5 rounded-full overflow-hidden bg-[#242f3d] flex items-center justify-center border border-emerald-500/40">
+                            <span class="team1FallbackAvatar text-[9px] text-emerald-400 font-bold">ت۱</span>
+                            <img class="team1AvatarImg w-full h-full object-cover hidden" src="" alt="">
+                        </div>
+                        <span class="team1NameText text-xs font-bold text-emerald-400 truncate max-w-[55px]">تیم ۱</span>
+                    </div>
+                    <div class="col-span-3 flex items-center justify-center gap-1.5">
+                        <div class="w-5 h-5 rounded-full overflow-hidden bg-[#242f3d] flex items-center justify-center border border-[#50a7ea]/40">
+                            <span class="team2FallbackAvatar text-[9px] text-[#50a7ea] font-bold">ت۲</span>
+                            <img class="team2AvatarImg w-full h-full object-cover hidden" src="" alt="">
+                        </div>
+                        <span class="team2NameText text-xs font-bold text-[#50a7ea] truncate max-w-[55px]">تیم ۲</span>
+                    </div>
+                </div>
+
+                <!-- سطرهای مقایسه آمار -->
                 <div class="divide-y divide-[#242f3d] text-xs">
-                    <div class="flex justify-between items-center py-3">
-                        <span class="text-[#708499]">مجموع امتیازات (بردها)</span>
-                        <div class="flex gap-6 font-bold text-sm persian-numbers">
-                            <span id="statTeam1Matches" class="text-emerald-400">0</span>
-                            <span id="statTeam2Matches" class="text-[#50a7ea]">0</span>
-                        </div>
+                    <div class="grid grid-cols-12 items-center py-3">
+                        <span class="col-span-6 text-slate-300 font-medium">مجموع امتیازات (بردها)</span>
+                        <div class="col-span-3 text-center font-black text-sm text-emerald-400 persian-numbers" id="statTeam1Matches">0</div>
+                        <div class="col-span-3 text-center font-black text-sm text-[#50a7ea] persian-numbers" id="statTeam2Matches">0</div>
                     </div>
-                    <div class="flex justify-between items-center py-3">
-                        <span class="text-[#708499]">کوت (۲ امتیازی)</span>
-                        <div class="flex gap-6 font-bold persian-numbers">
-                            <span id="statTeam1Koot" class="text-amber-400">0</span>
-                            <span id="statTeam2Koot" class="text-amber-400">0</span>
-                        </div>
+                    <div class="grid grid-cols-12 items-center py-3">
+                        <span class="col-span-6 text-[#708499]">کوت (۲ امتیازی)</span>
+                        <div class="col-span-3 text-center font-bold text-amber-400 persian-numbers" id="statTeam1Koot">0</div>
+                        <div class="col-span-3 text-center font-bold text-amber-400 persian-numbers" id="statTeam2Koot">0</div>
                     </div>
-                    <div class="flex justify-between items-center py-3">
-                        <span class="text-[#708499]">حاکم‌کوتی (۳ امتیازی)</span>
-                        <div class="flex gap-6 font-bold persian-numbers">
-                            <span id="statTeam1HakemKoot" class="text-red-400">0</span>
-                            <span id="statTeam2HakemKoot" class="text-red-400">0</span>
-                        </div>
+                    <div class="grid grid-cols-12 items-center py-3">
+                        <span class="col-span-6 text-[#708499]">حاکم‌کوتی (۳ امتیازی)</span>
+                        <div class="col-span-3 text-center font-bold text-red-400 persian-numbers" id="statTeam1HakemKoot">0</div>
+                        <div class="col-span-3 text-center font-bold text-red-400 persian-numbers" id="statTeam2HakemKoot">0</div>
                     </div>
-                    <div class="flex justify-between items-center py-3">
-                        <span class="text-[#708499]">مجموع کل دست‌های برده</span>
-                        <div class="flex gap-6 font-bold text-slate-300 persian-numbers">
-                            <span id="statTeam1TotalHands">0</span>
-                            <span id="statTeam2TotalHands">0</span>
-                        </div>
+                    <div class="grid grid-cols-12 items-center py-3">
+                        <span class="col-span-6 text-[#708499]">کل دست‌های برده‌شده</span>
+                        <div class="col-span-3 text-center font-bold text-slate-300 persian-numbers" id="statTeam1TotalHands">0</div>
+                        <div class="col-span-3 text-center font-bold text-slate-300 persian-numbers" id="statTeam2TotalHands">0</div>
                     </div>
                 </div>
             </div>
@@ -319,22 +328,22 @@
 
     </main>
 
-    <!-- Bottom Navigation Bar (Telegram Style) -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-[#17212b]/95 backdrop-blur-md border-t border-[#242f3d] z-40">
-        <div class="max-w-md mx-auto grid grid-cols-4 py-2 text-center text-[10px]">
-            <button onclick="switchTab('game')" id="nav-game" class="flex flex-col items-center gap-1 text-[#50a7ea] font-bold">
+    <!-- Bottom Navigation Bar (Floating Pill / کپسولی شناور با پدینگ و فاصله از پایین) -->
+    <nav class="fixed bottom-4 left-4 right-4 max-w-md mx-auto bg-[#17212b]/95 backdrop-blur-xl border border-[#2b394a] rounded-2xl shadow-2xl z-40 px-2 py-1.5">
+        <div class="grid grid-cols-4 text-center text-[10px]">
+            <button onclick="switchTab('game')" id="nav-game" class="flex flex-col items-center gap-1 text-[#50a7ea] font-bold py-1.5 px-2 rounded-xl bg-[#2481cc]/15 transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 <span>شمارش</span>
             </button>
-            <button onclick="switchTab('stats')" id="nav-stats" class="flex flex-col items-center gap-1 text-[#708499]">
+            <button onclick="switchTab('stats')" id="nav-stats" class="flex flex-col items-center gap-1 text-[#708499] py-1.5 px-2 rounded-xl transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
                 <span>آمار</span>
             </button>
-            <button onclick="switchTab('history')" id="nav-history" class="flex flex-col items-center gap-1 text-[#708499]">
+            <button onclick="switchTab('history')" id="nav-history" class="flex flex-col items-center gap-1 text-[#708499] py-1.5 px-2 rounded-xl transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 <span>تاریخچه</span>
             </button>
-            <button onclick="switchTab('settings')" id="nav-settings" class="flex flex-col items-center gap-1 text-[#708499]">
+            <button onclick="switchTab('settings')" id="nav-settings" class="flex flex-col items-center gap-1 text-[#708499] py-1.5 px-2 rounded-xl transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                 <span>تنظیمات</span>
             </button>
@@ -442,9 +451,9 @@
             ['game', 'stats', 'history', 'settings'].forEach(id => {
                 const btn = document.getElementById(`nav-${id}`);
                 if (id === tabId) {
-                    btn.className = "flex flex-col items-center gap-1 text-[#50a7ea] font-bold";
+                    btn.className = "flex flex-col items-center gap-1 text-[#50a7ea] font-bold py-1.5 px-2 rounded-xl bg-[#2481cc]/15 transition";
                 } else {
-                    btn.className = "flex flex-col items-center gap-1 text-[#708499]";
+                    btn.className = "flex flex-col items-center gap-1 text-[#708499] py-1.5 px-2 rounded-xl transition";
                 }
             });
             window.scrollTo(0, 0);
@@ -620,7 +629,7 @@
             let html = '';
             for (let i = 0; i < 7; i++) {
                 html += i < count 
-                    ? `<span class="w-2.5 h-2.5 rounded-full ${colorClass}"></span>` 
+                    ? `<span class="w-2 h-2 rounded-full ${colorClass}"></span>` 
                     : `<span class="w-1.5 h-1.5 rounded-full bg-[#242f3d]"></span>`;
             }
             return html;
