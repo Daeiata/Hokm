@@ -58,7 +58,7 @@
                         </div>
                         <span id="leagueNameDisplay" class="text-sm font-semibold text-amber-400">لیگ ماهانه حکم</span>
                     </div>
-                    <span id="leagueDaysDisplay" class="text-xs bg-slate-950/60 text-slate-400 px-2.5 py-1 rounded-full border border-slate-800">روز ۱ از ۳۰</span>
+                    <span id="leagueDaysDisplay" class="text-xs bg-slate-950/60 text-slate-400 px-2.5 py-1 rounded-full border border-slate-800">در حال محاسبه...</span>
                 </div>
                 
                 <div class="grid grid-cols-3 items-center text-center bg-slate-950/40 rounded-xl p-3 border border-slate-800/60">
@@ -158,7 +158,15 @@
         <!-- TAB 2: STATS -->
         <div id="tab-stats" class="tab-content space-y-4 hidden">
             <div class="bg-slate-900 rounded-2xl p-4 border border-slate-800 shadow-lg">
-                <h2 class="text-xs font-bold text-slate-300 mb-3">📊 آمار جامع لیگ و کوت‌ها</h2>
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-xs font-bold text-slate-300">📊 آمار لیگ و کوت‌ها</h2>
+                    <div class="flex bg-slate-950 rounded-lg p-0.5 border border-slate-800 text-[10px]">
+                        <button onclick="changeStatPeriod('month')" id="btnStatPeriod-month" class="px-2.5 py-1 rounded-md font-bold bg-amber-500 text-slate-950 transition">ماهانه</button>
+                        <button onclick="changeStatPeriod('year')" id="btnStatPeriod-year" class="px-2.5 py-1 rounded-md font-bold text-slate-400 transition">سالانه</button>
+                        <button onclick="changeStatPeriod('all')" id="btnStatPeriod-all" class="px-2.5 py-1 rounded-md font-bold text-slate-400 transition">کلی</button>
+                    </div>
+                </div>
+
                 <table class="w-full text-xs text-center border-collapse">
                     <thead>
                         <tr class="border-b border-slate-800 text-slate-400">
@@ -207,7 +215,7 @@
         <!-- TAB 4: SETTINGS -->
         <div id="tab-settings" class="tab-content space-y-4 hidden">
             <div class="bg-slate-900 rounded-2xl p-4 border border-slate-800 shadow-lg space-y-4">
-                <h2 class="text-xs font-bold text-amber-400 border-b border-slate-800 pb-2">⚙️ تنظیمات لیگ، نام‌ها و تصاویر</h2>
+                <h2 class="text-xs font-bold text-amber-400 border-b border-slate-800 pb-2">⚙️ تنظیمات لیگ، تقویم شمسی و تصاویر</h2>
                 
                 <div class="space-y-3 text-xs">
                     <!-- League Settings -->
@@ -215,6 +223,23 @@
                         <label class="block text-slate-400 mb-1">نام لیگ:</label>
                         <input type="text" id="inputLeagueName" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white outline-none">
                     </div>
+                    
+                    <!-- Jalali Date Range -->
+                    <div class="p-2.5 rounded-xl bg-slate-950/60 border border-amber-500/20 space-y-2">
+                        <label class="block text-amber-400 font-bold">بازه زمانی لیگ (تقویم شمسی):</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-[11px] text-slate-400 mb-0.5">تاریخ شروع شمسی:</label>
+                                <input type="text" id="inputJalaliStart" placeholder="مثال: 1405/08/01" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white outline-none text-center">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-slate-400 mb-0.5">تاریخ پایان شمسی:</label>
+                                <input type="text" id="inputJalaliEnd" placeholder="مثال: 1405/08/30" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-white outline-none text-center">
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-slate-500">در موعد پایان لیگ، برنامه به صورت خودکار قهرمان را اعلام خواهد کرد.</p>
+                    </div>
+
                     <div>
                         <label class="block text-slate-400 mb-1">لوگوی لیگ (آپلود عکس کوچک):</label>
                         <input type="file" id="inputLeagueLogoFile" accept="image/*" class="w-full text-slate-400 text-xs file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-slate-800 file:text-amber-400 hover:file:bg-slate-700">
@@ -239,15 +264,15 @@
                     </div>
 
                     <button onclick="saveAllSettings()" class="w-full bg-emerald-600 active:bg-emerald-500 text-white font-bold py-2.5 rounded-lg shadow mt-2">
-                        ذخیره مشخصات، تصاویر و آپدیت ابری
+                        ذخیره مشخصات، بازه شمسی و آپدیت ابری
                     </button>
                 </div>
 
                 <hr class="border-slate-800">
 
                 <div class="space-y-2.5 text-xs">
-                    <button onclick="announceLeagueChampion()" class="w-full bg-gradient-to-l from-amber-500 to-orange-600 text-slate-950 font-bold py-3 rounded-lg shadow">
-                        🏆 پایان ماه و اعلام قهرمان لیگ
+                    <button onclick="announceLeagueChampion(false)" class="w-full bg-gradient-to-l from-amber-500 to-orange-600 text-slate-950 font-bold py-3 rounded-lg shadow">
+                        🏆 مشاهده و اعلام قهرمان بازه جاری
                     </button>
                     <button onclick="hardResetLeague()" class="w-full bg-red-950/50 text-red-400 border border-red-900/40 py-2.5 rounded-lg">
                         🗑️ ریست کامل و شروع لیگ جدید
@@ -298,10 +323,80 @@
             apiKey: '$2a$10$gyk8xbmaosixxVnlkPXf4evqOcL8/MA5vZgdDxPK9pP4cWMddfAdK'
         };
 
+        // Jalali converter utilities
+        function gregorianToJalali(gy, gm, gd) {
+            const g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+            let jy = (gy <= 1600) ? 0 : 979;
+            gy -= (gy <= 1600) ? 621 : 1600;
+            const gy2 = (gm > 2) ? (gy + 1) : gy;
+            let days = (365 * gy) + parseInt((gy2 + 3) / 4) - parseInt((gy2 + 99) / 100) + parseInt((gy2 + 399) / 400) - 80 + gd + g_d_m[gm - 1];
+            jy += 33 * parseInt(days / 12053);
+            days %= 12053;
+            jy += 4 * parseInt(days / 1461);
+            days %= 1461;
+            jy += parseInt((days - 1) / 365);
+            if (days > 0) days = (days - 1) % 365;
+            let jm, jd;
+            if (days < 186) {
+                jm = 1 + parseInt(days / 31);
+                jd = 1 + (days % 31);
+            } else {
+                jm = 7 + parseInt((days - 186) / 30);
+                jd = 1 + ((days - 186) % 30);
+            }
+            return [jy, jm, jd];
+        }
+
+        function jalaliToGregorian(jy, jm, jd) {
+            let gy = (jy <= 979) ? 621 : 1600;
+            jy -= (jy <= 979) ? 0 : 979;
+            let days = (365 * jy) + ((parseInt(jy / 33)) * 8) + parseInt(((jy % 33) + 3) / 4) + 78 + jd + ((jm < 7) ? (jm - 1) * 31 : ((jm - 7) * 30) + 186);
+            gy += 400 * parseInt(days / 146097);
+            days %= 146097;
+            if (days > 36524) {
+                gy += 100 * parseInt(--days / 36524);
+                days %= 36524;
+                if (days >= 365) days++;
+            }
+            gy += 4 * parseInt(days / 1461);
+            days %= 1461;
+            gy += parseInt((days - 1) / 365);
+            if (days > 0) days = (days - 1) % 365;
+            let gd = days + 1;
+            const sal_a = [0, 31, ((gy % 4 === 0 && gy % 100 !== 0) || (gy % 400 === 0)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            let gm;
+            for (gm = 0; gm < 13; gm++) {
+                const v = sal_a[gm];
+                if (gd <= v) break;
+                gd -= v;
+            }
+            return [gy, gm, gd];
+        }
+
+        function getTodayJalaliString() {
+            const now = new Date();
+            const [jy, jm, jd] = gregorianToJalali(now.getFullYear(), now.getMonth() + 1, now.getDate());
+            return `${jy}/${String(jm).padStart(2, '0')}/${String(jd).padStart(2, '0')}`;
+        }
+
+        function parseJalali(jStr) {
+            if (!jStr) return null;
+            const parts = jStr.split(/[\/-]/).map(Number);
+            if (parts.length === 3 && parts[0] > 1300 && parts[1] >= 1 && parts[1] <= 12 && parts[2] >= 1 && parts[2] <= 31) {
+                const [gy, gm, gd] = jalaliToGregorian(parts[0], parts[1], parts[2]);
+                return new Date(gy, gm - 1, gd);
+            }
+            return null;
+        }
+
+        let currentStatPeriod = 'month';
+
         let state = {
             leagueName: 'لیگ حکم',
             leagueLogo: '',
-            startDate: '2026-10-19',
+            jalaliStart: '1405/07/28',
+            jalaliEnd: '1405/08/28',
+            championAnnounced: false,
             teams: {
                 1: { name: 'تیم ما', avatar: '', currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 },
                 2: { name: 'تیم حریف', avatar: '', currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 }
@@ -343,6 +438,7 @@
 
         async function initApp() {
             await syncFromCloud(false);
+            checkAutoLeagueEnd();
         }
 
         async function syncFromCloud(manual = false) {
@@ -357,6 +453,7 @@
                     state = Object.assign(state, result.record);
                     updateUI();
                     setCloudBadge('online', 'ابری (آنلاین)');
+                    checkAutoLeagueEnd();
                 }
             } catch (err) {
                 setCloudBadge('error');
@@ -385,6 +482,17 @@
             state.updatedAt = new Date().toISOString();
             updateUI();
             if (syncCloud) pushToCloud();
+        }
+
+        function checkAutoLeagueEnd() {
+            const endDate = parseJalali(state.jalaliEnd);
+            if (!endDate) return;
+            const now = new Date();
+            if (now > endDate && !state.championAnnounced) {
+                state.championAnnounced = true;
+                announceLeagueChampion(true);
+                saveState(true);
+            }
         }
 
         function setHakem(teamId) {
@@ -422,17 +530,28 @@
                 state.teams[teamId].matchWins += pointsAwarded;
 
                 const now = new Date();
-                const timeStr = now.toLocaleDateString('fa-IR') + ' - ' + now.toLocaleTimeString('fa-IR', {hour: '2-digit', minute:'2-digit'});
+                const [jy, jm, jd] = gregorianToJalali(now.getFullYear(), now.getMonth() + 1, now.getDate());
+                const jalaliDateStr = `${jy}/${String(jm).padStart(2, '0')}/${String(jd).padStart(2, '0')}`;
+                const timeStr = `${jalaliDateStr} - ${now.toLocaleTimeString('fa-IR', {hour: '2-digit', minute:'2-digit'})}`;
+
                 state.matchHistory.unshift({
+                    winnerTeamId: teamId,
+                    loserTeamId: loserId,
                     winner: state.teams[teamId].name,
                     loser: state.teams[loserId].name,
                     score: `7 - ${loserHands}`,
+                    winnerHands: 7,
+                    loserHands: loserHands,
                     type: winType,
                     points: pointsAwarded,
-                    date: timeStr
+                    date: timeStr,
+                    isoDate: now.toISOString(),
+                    jalaliYear: jy,
+                    jalaliMonth: jm,
+                    jalaliDay: jd
                 });
 
-                if (state.matchHistory.length > 60) state.matchHistory.pop();
+                if (state.matchHistory.length > 200) state.matchHistory.pop();
 
                 state.teams[1].currentHands = 0;
                 state.teams[2].currentHands = 0;
@@ -478,11 +597,82 @@
             return html;
         }
 
+        function changeStatPeriod(period) {
+            currentStatPeriod = period;
+            ['month', 'year', 'all'].forEach(p => {
+                const btn = document.getElementById(`btnStatPeriod-${p}`);
+                if (p === period) {
+                    btn.className = "px-2.5 py-1 rounded-md font-bold bg-amber-500 text-slate-950 transition";
+                } else {
+                    btn.className = "px-2.5 py-1 rounded-md font-bold text-slate-400 transition";
+                }
+            });
+            updateStatsTable();
+        }
+
+        function updateStatsTable() {
+            let t1Points = 0, t2Points = 0;
+            let t1Koot = 0, t2Koot = 0;
+            let t1HakemKoot = 0, t2HakemKoot = 0;
+            let t1Hands = 0, t2Hands = 0;
+
+            const now = new Date();
+            const [curJy, curJm] = gregorianToJalali(now.getFullYear(), now.getMonth() + 1, now.getDate());
+
+            state.matchHistory.forEach(m => {
+                let include = false;
+                if (currentStatPeriod === 'all') {
+                    include = true;
+                } else if (currentStatPeriod === 'year') {
+                    include = (m.jalaliYear === curJy);
+                } else if (currentStatPeriod === 'month') {
+                    include = (m.jalaliYear === curJy && m.jalaliMonth === curJm);
+                }
+
+                if (include) {
+                    if (m.winnerTeamId === 1) {
+                        t1Points += m.points;
+                        if (m.points === 2) t1Koot += 1;
+                        if (m.points === 3) t1HakemKoot += 1;
+                        t1Hands += m.winnerHands || 7;
+                        t2Hands += m.loserHands || 0;
+                    } else if (m.winnerTeamId === 2) {
+                        t2Points += m.points;
+                        if (m.points === 2) t2Koot += 1;
+                        if (m.points === 3) t2HakemKoot += 1;
+                        t2Hands += m.winnerHands || 7;
+                        t1Hands += m.loserHands || 0;
+                    }
+                }
+            });
+
+            // Fallback to state counts if period is 'all' and history stack was short
+            if (currentStatPeriod === 'all' && state.matchHistory.length === 0) {
+                t1Points = state.teams[1].matchWins;
+                t2Points = state.teams[2].matchWins;
+                t1Koot = state.teams[1].kootCount;
+                t2Koot = state.teams[2].kootCount;
+                t1HakemKoot = state.teams[1].hakemKootCount;
+                t2HakemKoot = state.teams[2].hakemKootCount;
+                t1Hands = state.teams[1].totalHands;
+                t2Hands = state.teams[2].totalHands;
+            }
+
+            document.getElementById('statTeam1Matches').innerText = t1Points.toLocaleString('fa-IR');
+            document.getElementById('statTeam2Matches').innerText = t2Points.toLocaleString('fa-IR');
+            document.getElementById('statTeam1Koot').innerText = t1Koot.toLocaleString('fa-IR');
+            document.getElementById('statTeam2Koot').innerText = t2Koot.toLocaleString('fa-IR');
+            document.getElementById('statTeam1HakemKoot').innerText = t1HakemKoot.toLocaleString('fa-IR');
+            document.getElementById('statTeam2HakemKoot').innerText = t2HakemKoot.toLocaleString('fa-IR');
+            document.getElementById('statTeam1TotalHands').innerText = t1Hands.toLocaleString('fa-IR');
+            document.getElementById('statTeam2TotalHands').innerText = t2Hands.toLocaleString('fa-IR');
+        }
+
         function updateUI() {
             document.getElementById('topLeagueTitle').innerText = state.leagueName;
             document.getElementById('leagueNameDisplay').innerText = state.leagueName;
             
-            // League Logo
+            // Logos
             const headerLogoImg = document.getElementById('leagueLogoHeaderImg');
             const headerLogoFallback = document.getElementById('leagueLogoHeaderFallback');
             const bannerLogoImg = document.getElementById('leagueLogoBannerImg');
@@ -502,14 +692,28 @@
                 bannerLogoFallback.classList.remove('hidden');
             }
 
-            // Team Avatars
             renderTeamAvatar(1);
             renderTeamAvatar(2);
 
-            const start = new Date(state.startDate);
+            // Jalali Timeline Calculation
+            const sDate = parseJalali(state.jalaliStart);
+            const eDate = parseJalali(state.jalaliEnd);
             const now = new Date();
-            const diffDays = Math.max(1, Math.ceil((now - start) / (1000 * 60 * 60 * 24)));
-            document.getElementById('leagueDaysDisplay').innerText = `روز ${diffDays.toLocaleString('fa-IR')} از ۳۰`;
+
+            if (sDate && eDate) {
+                const totalDays = Math.max(1, Math.round((eDate - sDate) / (1000 * 60 * 60 * 24)));
+                if (now < sDate) {
+                    const daysToStart = Math.ceil((sDate - now) / (1000 * 60 * 60 * 24));
+                    document.getElementById('leagueDaysDisplay').innerText = `شروع در ${daysToStart.toLocaleString('fa-IR')} روز دیگر`;
+                } else if (now > eDate) {
+                    document.getElementById('leagueDaysDisplay').innerText = `🏁 لیگ پایان یافته`;
+                } else {
+                    const passedDays = Math.min(totalDays, Math.max(1, Math.ceil((now - sDate) / (1000 * 60 * 60 * 24))));
+                    document.getElementById('leagueDaysDisplay').innerText = `روز ${passedDays.toLocaleString('fa-IR')} از ${totalDays.toLocaleString('fa-IR')}`;
+                }
+            } else {
+                document.getElementById('leagueDaysDisplay').innerText = getTodayJalaliString();
+            }
 
             document.querySelectorAll('.team1NameText').forEach(el => el.innerText = state.teams[1].name);
             document.querySelectorAll('.team2NameText').forEach(el => el.innerText = state.teams[2].name);
@@ -550,14 +754,7 @@
 
             document.getElementById('undoBtn').disabled = state.handHistoryStack.length === 0;
 
-            document.getElementById('statTeam1Matches').innerText = state.teams[1].matchWins.toLocaleString('fa-IR');
-            document.getElementById('statTeam2Matches').innerText = state.teams[2].matchWins.toLocaleString('fa-IR');
-            document.getElementById('statTeam1Koot').innerText = state.teams[1].kootCount.toLocaleString('fa-IR');
-            document.getElementById('statTeam2Koot').innerText = state.teams[2].kootCount.toLocaleString('fa-IR');
-            document.getElementById('statTeam1HakemKoot').innerText = state.teams[1].hakemKootCount.toLocaleString('fa-IR');
-            document.getElementById('statTeam2HakemKoot').innerText = state.teams[2].hakemKootCount.toLocaleString('fa-IR');
-            document.getElementById('statTeam1TotalHands').innerText = state.teams[1].totalHands.toLocaleString('fa-IR');
-            document.getElementById('statTeam2TotalHands').innerText = state.teams[2].totalHands.toLocaleString('fa-IR');
+            updateStatsTable();
 
             document.getElementById('totalGamesPlayed').innerText = `${state.matchHistory.length.toLocaleString('fa-IR')} بازی`;
             const historyContainer = document.getElementById('historyList');
@@ -579,6 +776,8 @@
             }
 
             document.getElementById('inputLeagueName').value = state.leagueName;
+            document.getElementById('inputJalaliStart').value = state.jalaliStart || '1405/07/28';
+            document.getElementById('inputJalaliEnd').value = state.jalaliEnd || '1405/08/28';
             document.getElementById('inputTeam1Name').value = state.teams[1].name;
             document.getElementById('inputTeam2Name').value = state.teams[2].name;
         }
@@ -609,7 +808,6 @@
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
                 reader.onload = (e) => {
-                    // فشرده‌سازی خودکار در یک کنواس کوچک برای بهینه‌سازی حجم
                     const img = new Image();
                     img.src = e.target.result;
                     img.onload = () => {
@@ -634,6 +832,8 @@
 
         async function saveAllSettings() {
             const lName = document.getElementById('inputLeagueName').value.trim();
+            const jStart = document.getElementById('inputJalaliStart').value.trim();
+            const jEnd = document.getElementById('inputJalaliEnd').value.trim();
             const t1Name = document.getElementById('inputTeam1Name').value.trim();
             const t2Name = document.getElementById('inputTeam2Name').value.trim();
 
@@ -642,6 +842,11 @@
             const t2File = document.getElementById('inputTeam2AvatarFile').files[0];
 
             if (lName) state.leagueName = lName;
+            if (jStart) state.jalaliStart = jStart;
+            if (jEnd) {
+                state.jalaliEnd = jEnd;
+                state.championAnnounced = false; // بازگشایی امکان اعلان در پایان دوره جدید
+            }
             if (t1Name) state.teams[1].name = t1Name;
             if (t2Name) state.teams[2].name = t2Name;
 
@@ -660,7 +865,7 @@
 
             saveState(true);
             switchTab('game');
-            alert('مشخصات و تصاویر با موفقیت ذخیره و روی سرور ابری همگام‌سازی شدند!');
+            alert('تنظیمات و بازه تقویم شمسی ذخیره و در سرور ابری همگام‌سازی شد!');
         }
 
         function showWinModal(winnerName, winType, scoreDesc, icon) {
@@ -676,27 +881,27 @@
             document.getElementById('winModal').classList.remove('flex');
         }
 
-        function announceLeagueChampion() {
+        function announceLeagueChampion(isAuto = false) {
             const t1 = state.teams[1];
             const t2 = state.teams[2];
             let title = '', desc = '';
 
             if (t1.matchWins > t2.matchWins) {
-                title = `🏆 قهرمان: ${t1.name}`;
-                desc = `با ${t1.matchWins} امتیاز (${t1.kootCount} کوت و ${t1.hakemKootCount} حاکم‌کوتی) در برابر ${t2.matchWins} امتیاز ${t2.name}`;
+                title = `🏆 قهرمان لیگ: ${t1.name}`;
+                desc = `${isAuto ? '🏁 پایان رسمی بازه لیگ! ' : ''}با کسب ${t1.matchWins} امتیاز (${t1.kootCount} کوت و ${t1.hakemKootCount} حاکم‌کوتی) مقابل ${t2.matchWins} امتیازِ ${t2.name}`;
             } else if (t2.matchWins > t1.matchWins) {
-                title = `🏆 قهرمان: ${t2.name}`;
-                desc = `با ${t2.matchWins} امتیاز (${t2.kootCount} کوت و ${t2.hakemKootCount} حاکم‌کوتی) در برابر ${t1.matchWins} امتیاز ${t1.name}`;
+                title = `🏆 قهرمان لیگ: ${t2.name}`;
+                desc = `${isAuto ? '🏁 پایان رسمی بازه لیگ! ' : ''}با کسب ${t2.matchWins} امتیاز (${t2.kootCount} کوت و ${t2.hakemKootCount} حاکم‌کوتی) مقابل ${t1.matchWins} امتیازِ ${t1.name}`;
             } else {
-                title = `🤝 لیگ مساوی!`;
-                desc = `هر دو تیم با ${t1.matchWins} امتیاز برابرند!`;
+                title = `🤝 پایان لیگ: مساوی!`;
+                desc = `${isAuto ? '🏁 پایان رسمی بازه لیگ! ' : ''}هر دو تیم با امتیاز برابر ${t1.matchWins} لیگ را به پایان رساندند!`;
             }
 
-            showWinModal(title, desc, `کل دست‌های بازی شده: ${t1.totalHands + t2.totalHands}`, '👑');
+            showWinModal(title, desc, `مجموع کل دست‌های ثبت شده: ${t1.totalHands + t2.totalHands}`, '👑');
         }
 
         function hardResetLeague() {
-            if (confirm('آیا مطمئن هستید؟ کل آمار پاک شده و لیگ جدید شروع می‌شود.')) {
+            if (confirm('آیا مطمئن هستید؟ کل آمار ریست شده و دوره لیگ جدید آغاز می‌شود.')) {
                 const t1Name = state.teams[1].name;
                 const t2Name = state.teams[2].name;
                 const t1Avatar = state.teams[1].avatar;
@@ -706,6 +911,9 @@
                 state = {
                     leagueName: state.leagueName,
                     leagueLogo: logo,
+                    jalaliStart: getTodayJalaliString(),
+                    jalaliEnd: state.jalaliEnd,
+                    championAnnounced: false,
                     startDate: new Date().toISOString(),
                     updatedAt: new Date().toISOString(),
                     teams: {
