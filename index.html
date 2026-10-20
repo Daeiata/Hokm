@@ -27,7 +27,10 @@
     <header class="bg-slate-900/95 backdrop-blur border-b border-slate-800 sticky top-0 z-50">
         <div class="max-w-md mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-2">
-                <span class="text-lg text-red-500">♥️</span>
+                <div id="leagueLogoHeaderContainer" class="w-7 h-7 rounded-lg overflow-hidden bg-slate-800 border border-slate-700 flex items-center justify-center">
+                    <span id="leagueLogoHeaderFallback" class="text-base text-red-500">♥️</span>
+                    <img id="leagueLogoHeaderImg" src="" alt="لوگو" class="w-full h-full object-cover hidden">
+                </div>
                 <h1 class="text-sm font-bold bg-gradient-to-l from-amber-400 to-orange-500 bg-clip-text text-transparent" id="topLeagueTitle">لیگ حکم ابری</h1>
             </div>
             <div class="flex items-center gap-2">
@@ -47,28 +50,46 @@
         <!-- TAB 1: GAME / COUNTER -->
         <div id="tab-game" class="tab-content space-y-4">
             <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-4 border border-slate-700/80 shadow-lg">
-                <div class="flex justify-between items-center mb-2">
-                    <span id="leagueNameDisplay" class="text-sm font-semibold text-amber-400">🏆 لیگ ماهانه حکم</span>
+                <div class="flex justify-between items-center mb-3">
+                    <div class="flex items-center gap-2">
+                        <div id="leagueLogoBannerContainer" class="w-6 h-6 rounded-md overflow-hidden bg-slate-950/60 border border-slate-800 flex items-center justify-center">
+                            <span id="leagueLogoBannerFallback" class="text-xs">🏆</span>
+                            <img id="leagueLogoBannerImg" src="" alt="لوگو" class="w-full h-full object-cover hidden">
+                        </div>
+                        <span id="leagueNameDisplay" class="text-sm font-semibold text-amber-400">لیگ ماهانه حکم</span>
+                    </div>
                     <span id="leagueDaysDisplay" class="text-xs bg-slate-950/60 text-slate-400 px-2.5 py-1 rounded-full border border-slate-800">روز ۱ از ۳۰</span>
                 </div>
+                
                 <div class="grid grid-cols-3 items-center text-center bg-slate-950/40 rounded-xl p-3 border border-slate-800/60">
-                    <div>
-                        <div id="team1NameLeague" class="text-xs text-slate-400 truncate">تیم ما</div>
+                    <div class="flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full border-2 border-emerald-500/50 bg-slate-900 overflow-hidden flex items-center justify-center mb-1">
+                            <span class="team1FallbackAvatar text-emerald-400 font-bold text-sm">ت۱</span>
+                            <img class="team1AvatarImg w-full h-full object-cover hidden" src="" alt="تیم ۱">
+                        </div>
+                        <div id="team1NameLeague" class="text-xs text-slate-300 font-medium truncate max-w-[90px]">تیم ما</div>
                         <div id="team1MatchWins" class="text-3xl font-black text-emerald-400 mt-1">0</div>
                         <div class="text-[10px] text-slate-500">امتیاز کل</div>
                     </div>
+                    
                     <div class="text-xs font-bold text-slate-500">
                         VS
                         <div class="mt-1 text-[10px] text-amber-500/80" id="leaderBadge">مساوی</div>
                     </div>
-                    <div>
-                        <div id="team2NameLeague" class="text-xs text-slate-400 truncate">تیم حریف</div>
+                    
+                    <div class="flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full border-2 border-blue-500/50 bg-slate-900 overflow-hidden flex items-center justify-center mb-1">
+                            <span class="team2FallbackAvatar text-blue-400 font-bold text-sm">ت۲</span>
+                            <img class="team2AvatarImg w-full h-full object-cover hidden" src="" alt="تیم ۲">
+                        </div>
+                        <div id="team2NameLeague" class="text-xs text-slate-300 font-medium truncate max-w-[90px]">تیم حریف</div>
                         <div id="team2MatchWins" class="text-3xl font-black text-blue-400 mt-1">0</div>
                         <div class="text-[10px] text-slate-500">امتیاز کل</div>
                     </div>
                 </div>
             </div>
 
+            <!-- Scoreboard -->
             <div class="bg-slate-900 rounded-2xl p-4 border border-slate-800 shadow-xl">
                 <div class="flex justify-between items-center mb-3">
                     <h2 class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
@@ -80,20 +101,29 @@
                     </button>
                 </div>
 
+                <!-- Hakem Selection -->
                 <div class="bg-slate-950/70 p-2.5 rounded-xl border border-slate-800/80 mb-4">
                     <div class="text-[11px] text-slate-400 text-center mb-2">👑 <span class="text-amber-400 font-semibold">حاکم</span> این دست کدام تیم است؟</div>
                     <div class="grid grid-cols-2 gap-2">
-                        <button id="hakemTeam1Btn" onclick="setHakem(1)" class="py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border">
-                            👑 <span class="team1NameText">تیم ما</span>
+                        <button id="hakemTeam1Btn" onclick="setHakem(1)" class="py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 border">
+                            <span>👑</span>
+                            <span class="team1NameText truncate">تیم ما</span>
                         </button>
-                        <button id="hakemTeam2Btn" onclick="setHakem(2)" class="py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border">
-                            👑 <span class="team2NameText">تیم حریف</span>
+                        <button id="hakemTeam2Btn" onclick="setHakem(2)" class="py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 border">
+                            <span>👑</span>
+                            <span class="team2NameText truncate">تیم حریف</span>
                         </button>
                     </div>
                 </div>
 
+                <!-- Hands Counter Cards -->
                 <div class="grid grid-cols-2 gap-3 text-center">
+                    <!-- Team 1 -->
                     <div class="bg-slate-950/50 p-3.5 rounded-2xl border border-emerald-500/20 flex flex-col items-center">
+                        <div class="w-12 h-12 rounded-full border border-emerald-500/40 bg-slate-900 overflow-hidden flex items-center justify-center mb-1">
+                            <span class="team1FallbackAvatar text-emerald-400 font-bold">ت۱</span>
+                            <img class="team1AvatarImg w-full h-full object-cover hidden" src="" alt="تیم ۱">
+                        </div>
                         <h3 class="team1NameText font-bold text-emerald-400 text-sm mb-1 truncate w-full">تیم ما</h3>
                         <div id="team1CurrentHands" class="text-6xl font-black text-white my-2">0</div>
                         <div id="team1Seeds" class="flex gap-1 h-4 mb-3 items-center justify-center"></div>
@@ -102,7 +132,12 @@
                         </button>
                     </div>
 
+                    <!-- Team 2 -->
                     <div class="bg-slate-950/50 p-3.5 rounded-2xl border border-blue-500/20 flex flex-col items-center">
+                        <div class="w-12 h-12 rounded-full border border-blue-500/40 bg-slate-900 overflow-hidden flex items-center justify-center mb-1">
+                            <span class="team2FallbackAvatar text-blue-400 font-bold">ت۲</span>
+                            <img class="team2AvatarImg w-full h-full object-cover hidden" src="" alt="تیم ۲">
+                        </div>
                         <h3 class="team2NameText font-bold text-blue-400 text-sm mb-1 truncate w-full">تیم حریف</h3>
                         <div id="team2CurrentHands" class="text-6xl font-black text-white my-2">0</div>
                         <div id="team2Seeds" class="flex gap-1 h-4 mb-3 items-center justify-center"></div>
@@ -172,25 +207,39 @@
         <!-- TAB 4: SETTINGS -->
         <div id="tab-settings" class="tab-content space-y-4 hidden">
             <div class="bg-slate-900 rounded-2xl p-4 border border-slate-800 shadow-lg space-y-4">
-                <h2 class="text-xs font-bold text-amber-400 border-b border-slate-800 pb-2">⚙️ تنظیمات لیگ ابری</h2>
+                <h2 class="text-xs font-bold text-amber-400 border-b border-slate-800 pb-2">⚙️ تنظیمات لیگ، نام‌ها و تصاویر</h2>
                 
                 <div class="space-y-3 text-xs">
+                    <!-- League Settings -->
                     <div>
                         <label class="block text-slate-400 mb-1">نام لیگ:</label>
-                        <input type="text" id="inputLeagueName" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2.5 text-white outline-none">
+                        <input type="text" id="inputLeagueName" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white outline-none">
                     </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-emerald-400 mb-1">نام تیم اول:</label>
-                            <input type="text" id="inputTeam1Name" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-2 text-white outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-blue-400 mb-1">نام تیم دوم:</label>
-                            <input type="text" id="inputTeam2Name" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-2 text-white outline-none">
-                        </div>
+                    <div>
+                        <label class="block text-slate-400 mb-1">لوگوی لیگ (آپلود عکس کوچک):</label>
+                        <input type="file" id="inputLeagueLogoFile" accept="image/*" class="w-full text-slate-400 text-xs file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-slate-800 file:text-amber-400 hover:file:bg-slate-700">
                     </div>
-                    <button onclick="saveTeamNames()" class="w-full bg-emerald-600 active:bg-emerald-500 text-white font-bold py-2.5 rounded-lg shadow">
-                        ذخیره نام‌ها و آپدیت ابری
+
+                    <hr class="border-slate-800 my-2">
+
+                    <!-- Team 1 Settings -->
+                    <div class="p-2.5 rounded-xl bg-slate-950/60 border border-emerald-500/20 space-y-2">
+                        <label class="block text-emerald-400 font-bold">تنظیمات تیم اول:</label>
+                        <input type="text" id="inputTeam1Name" placeholder="نام تیم اول" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-2 text-white outline-none">
+                        <label class="block text-[11px] text-slate-400">تصویر پروفایل تیم اول:</label>
+                        <input type="file" id="inputTeam1AvatarFile" accept="image/*" class="w-full text-slate-400 text-xs file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-slate-800 file:text-emerald-400 hover:file:bg-slate-700">
+                    </div>
+
+                    <!-- Team 2 Settings -->
+                    <div class="p-2.5 rounded-xl bg-slate-950/60 border border-blue-500/20 space-y-2">
+                        <label class="block text-blue-400 font-bold">تنظیمات تیم دوم:</label>
+                        <input type="text" id="inputTeam2Name" placeholder="نام تیم دوم" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-2 text-white outline-none">
+                        <label class="block text-[11px] text-slate-400">تصویر پروفایل تیم دوم:</label>
+                        <input type="file" id="inputTeam2AvatarFile" accept="image/*" class="w-full text-slate-400 text-xs file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-slate-800 file:text-blue-400 hover:file:bg-slate-700">
+                    </div>
+
+                    <button onclick="saveAllSettings()" class="w-full bg-emerald-600 active:bg-emerald-500 text-white font-bold py-2.5 rounded-lg shadow mt-2">
+                        ذخیره مشخصات، تصاویر و آپدیت ابری
                     </button>
                 </div>
 
@@ -251,10 +300,11 @@
 
         let state = {
             leagueName: 'لیگ حکم',
+            leagueLogo: '',
             startDate: '2026-10-19',
             teams: {
-                1: { name: 'تیم ما', currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 },
-                2: { name: 'تیم حریف', currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 }
+                1: { name: 'تیم ما', avatar: '', currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 },
+                2: { name: 'تیم حریف', avatar: '', currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 }
             },
             currentHakem: 1,
             handHistoryStack: [],
@@ -304,7 +354,7 @@
                 if (!res.ok) throw new Error('Fetch failed');
                 const result = await res.json();
                 if (result && result.record && result.record.teams) {
-                    state = result.record;
+                    state = Object.assign(state, result.record);
                     updateUI();
                     setCloudBadge('online', 'ابری (آنلاین)');
                 }
@@ -430,8 +480,32 @@
 
         function updateUI() {
             document.getElementById('topLeagueTitle').innerText = state.leagueName;
-            document.getElementById('leagueNameDisplay').innerText = '🏆 ' + state.leagueName;
+            document.getElementById('leagueNameDisplay').innerText = state.leagueName;
             
+            // League Logo
+            const headerLogoImg = document.getElementById('leagueLogoHeaderImg');
+            const headerLogoFallback = document.getElementById('leagueLogoHeaderFallback');
+            const bannerLogoImg = document.getElementById('leagueLogoBannerImg');
+            const bannerLogoFallback = document.getElementById('leagueLogoBannerFallback');
+
+            if (state.leagueLogo) {
+                headerLogoImg.src = state.leagueLogo;
+                headerLogoImg.classList.remove('hidden');
+                headerLogoFallback.classList.add('hidden');
+                bannerLogoImg.src = state.leagueLogo;
+                bannerLogoImg.classList.remove('hidden');
+                bannerLogoFallback.classList.add('hidden');
+            } else {
+                headerLogoImg.classList.add('hidden');
+                headerLogoFallback.classList.remove('hidden');
+                bannerLogoImg.classList.add('hidden');
+                bannerLogoFallback.classList.remove('hidden');
+            }
+
+            // Team Avatars
+            renderTeamAvatar(1);
+            renderTeamAvatar(2);
+
             const start = new Date(state.startDate);
             const now = new Date();
             const diffDays = Math.max(1, Math.ceil((now - start) / (1000 * 60 * 60 * 24)));
@@ -462,11 +536,11 @@
             const h1Btn = document.getElementById('hakemTeam1Btn');
             const h2Btn = document.getElementById('hakemTeam2Btn');
             if (state.currentHakem === 1) {
-                h1Btn.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border bg-amber-500/20 border-amber-500 text-amber-300";
-                h2Btn.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border bg-slate-900 border-slate-800 text-slate-500";
+                h1Btn.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 border bg-amber-500/20 border-amber-500 text-amber-300";
+                h2Btn.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 border bg-slate-900 border-slate-800 text-slate-500";
             } else {
-                h2Btn.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border bg-amber-500/20 border-amber-500 text-amber-300";
-                h1Btn.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 border bg-slate-900 border-slate-800 text-slate-500";
+                h2Btn.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 border bg-amber-500/20 border-amber-500 text-amber-300";
+                h1Btn.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 border bg-slate-900 border-slate-800 text-slate-500";
             }
 
             document.getElementById('team1CurrentHands').innerText = state.teams[1].currentHands.toLocaleString('fa-IR');
@@ -509,6 +583,86 @@
             document.getElementById('inputTeam2Name').value = state.teams[2].name;
         }
 
+        function renderTeamAvatar(teamId) {
+            const avatar = state.teams[teamId].avatar;
+            const fallbackEls = document.querySelectorAll(`.team${teamId}FallbackAvatar`);
+            const imgEls = document.querySelectorAll(`.team${teamId}AvatarImg`);
+
+            if (avatar) {
+                imgEls.forEach(img => {
+                    img.src = avatar;
+                    img.classList.remove('hidden');
+                });
+                fallbackEls.forEach(fb => fb.classList.add('hidden'));
+            } else {
+                imgEls.forEach(img => img.classList.add('hidden'));
+                fallbackEls.forEach(fb => {
+                    fb.innerText = state.teams[teamId].name.slice(0, 2);
+                    fb.classList.remove('hidden');
+                });
+            }
+        }
+
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                if (!file) return resolve(null);
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (e) => {
+                    // فشرده‌سازی خودکار در یک کنواس کوچک برای بهینه‌سازی حجم
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const maxDim = 120;
+                        let w = img.width, h = img.height;
+                        if (w > h) {
+                            if (w > maxDim) { h *= maxDim / w; w = maxDim; }
+                        } else {
+                            if (h > maxDim) { w *= maxDim / h; h = maxDim; }
+                        }
+                        canvas.width = w;
+                        canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, w, h);
+                        resolve(canvas.toDataURL('image/jpeg', 0.8));
+                    };
+                };
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        async function saveAllSettings() {
+            const lName = document.getElementById('inputLeagueName').value.trim();
+            const t1Name = document.getElementById('inputTeam1Name').value.trim();
+            const t2Name = document.getElementById('inputTeam2Name').value.trim();
+
+            const logoFile = document.getElementById('inputLeagueLogoFile').files[0];
+            const t1File = document.getElementById('inputTeam1AvatarFile').files[0];
+            const t2File = document.getElementById('inputTeam2AvatarFile').files[0];
+
+            if (lName) state.leagueName = lName;
+            if (t1Name) state.teams[1].name = t1Name;
+            if (t2Name) state.teams[2].name = t2Name;
+
+            if (logoFile) {
+                const b64 = await fileToBase64(logoFile);
+                if (b64) state.leagueLogo = b64;
+            }
+            if (t1File) {
+                const b64 = await fileToBase64(t1File);
+                if (b64) state.teams[1].avatar = b64;
+            }
+            if (t2File) {
+                const b64 = await fileToBase64(t2File);
+                if (b64) state.teams[2].avatar = b64;
+            }
+
+            saveState(true);
+            switchTab('game');
+            alert('مشخصات و تصاویر با موفقیت ذخیره و روی سرور ابری همگام‌سازی شدند!');
+        }
+
         function showWinModal(winnerName, winType, scoreDesc, icon) {
             document.getElementById('winModalIcon').innerText = icon;
             document.getElementById('winModalTitle').innerText = `${winnerName}`;
@@ -520,20 +674,6 @@
         function closeWinModal() {
             document.getElementById('winModal').classList.add('hidden');
             document.getElementById('winModal').classList.remove('flex');
-        }
-
-        function saveTeamNames() {
-            const lName = document.getElementById('inputLeagueName').value.trim();
-            const t1 = document.getElementById('inputTeam1Name').value.trim();
-            const t2 = document.getElementById('inputTeam2Name').value.trim();
-
-            if (lName) state.leagueName = lName;
-            if (t1) state.teams[1].name = t1;
-            if (t2) state.teams[2].name = t2;
-
-            saveState(true);
-            switchTab('game');
-            alert('نام تیم‌ها ذخیره و روی JSONBin سینک شد!');
         }
 
         function announceLeagueChampion() {
@@ -559,13 +699,18 @@
             if (confirm('آیا مطمئن هستید؟ کل آمار پاک شده و لیگ جدید شروع می‌شود.')) {
                 const t1Name = state.teams[1].name;
                 const t2Name = state.teams[2].name;
+                const t1Avatar = state.teams[1].avatar;
+                const t2Avatar = state.teams[2].avatar;
+                const logo = state.leagueLogo;
+
                 state = {
                     leagueName: state.leagueName,
+                    leagueLogo: logo,
                     startDate: new Date().toISOString(),
                     updatedAt: new Date().toISOString(),
                     teams: {
-                        1: { name: t1Name, currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 },
-                        2: { name: t2Name, currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 }
+                        1: { name: t1Name, avatar: t1Avatar, currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 },
+                        2: { name: t2Name, avatar: t2Avatar, currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 }
                     },
                     currentHakem: 1,
                     handHistoryStack: [],
