@@ -28,12 +28,12 @@
         <div class="max-w-md mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-2">
                 <span class="text-lg text-red-500">♥️</span>
-                <h1 class="text-sm font-bold bg-gradient-to-l from-amber-400 to-orange-500 bg-clip-text text-transparent" id="topLeagueTitle">لیگ حکم</h1>
+                <h1 class="text-sm font-bold bg-gradient-to-l from-amber-400 to-orange-500 bg-clip-text text-transparent" id="topLeagueTitle">لیگ حکم ابری</h1>
             </div>
             <div class="flex items-center gap-2">
                 <span id="cloudStatusBadge" onclick="syncFromCloud(true)" class="cursor-pointer text-[10px] px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700 flex items-center gap-1">
                     <span id="cloudStatusDot" class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
-                    <span id="cloudStatusText">متصل به جیست</span>
+                    <span id="cloudStatusText">اتصال ابری</span>
                 </span>
                 <button onclick="syncFromCloud(true)" class="text-xs bg-slate-800 active:bg-slate-700 text-emerald-400 px-2 py-1 rounded-lg border border-slate-700">
                     🔄
@@ -172,7 +172,7 @@
         <!-- TAB 4: SETTINGS -->
         <div id="tab-settings" class="tab-content space-y-4 hidden">
             <div class="bg-slate-900 rounded-2xl p-4 border border-slate-800 shadow-lg space-y-4">
-                <h2 class="text-xs font-bold text-amber-400 border-b border-slate-800 pb-2">⚙️ تنظیمات لیگ</h2>
+                <h2 class="text-xs font-bold text-amber-400 border-b border-slate-800 pb-2">⚙️ تنظیمات لیگ ابری</h2>
                 
                 <div class="space-y-3 text-xs">
                     <div>
@@ -190,7 +190,7 @@
                         </div>
                     </div>
                     <button onclick="saveTeamNames()" class="w-full bg-emerald-600 active:bg-emerald-500 text-white font-bold py-2.5 rounded-lg shadow">
-                        ذخیره نام‌ها
+                        ذخیره نام‌ها و آپدیت ابری
                     </button>
                 </div>
 
@@ -244,8 +244,10 @@
     </div>
 
     <script>
-        const GIST_RAW_URL = 'https://gist.githubusercontent.com/Daeiata/1282936c1e87fc02a2f1da971cf0fbde/raw/17815af1b077c2098a0268310f531fb80ca93aa4/hokm_db.json';
-        const STORAGE_KEY = 'hokm_league_gist_v1';
+        const jsonBinConfig = {
+            binId: '6ad6e402ac6210605a4112e0',
+            apiKey: '$2a$10$gyk8xbmaosixxVnlkPXf4evqOcL8/MA5vZgdDxPK9pP4cWMddfAdK'
+        };
 
         let state = {
             leagueName: 'لیگ حکم',
@@ -279,10 +281,10 @@
             const label = document.getElementById('cloudStatusText');
             if (status === 'syncing') {
                 dot.className = 'w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping';
-                label.innerText = 'در حال خواندن...';
+                label.innerText = 'در حال سینک...';
             } else if (status === 'online') {
                 dot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-400';
-                label.innerText = text || 'متصل به جیست';
+                label.innerText = text || 'ابری (آنلاین)';
             } else {
                 dot.className = 'w-1.5 h-1.5 rounded-full bg-red-500';
                 label.innerText = 'خطای اتصال';
@@ -290,41 +292,54 @@
         }
 
         async function initApp() {
-            const savedState = localStorage.getItem(STORAGE_KEY);
-            if (savedState) {
-                try { state = JSON.parse(savedState); } catch (e) {}
-            }
-            updateUI();
             await syncFromCloud(false);
         }
 
         async function syncFromCloud(manual = false) {
             setCloudBadge('syncing');
             try {
-                const res = await fetch(GIST_RAW_URL + '?t=' + new Date().getTime());
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${jsonBinConfig.binId}/latest`, {
+                    headers: { 'X-Master-Key': jsonBinConfig.apiKey }
+                });
                 if (!res.ok) throw new Error('Fetch failed');
                 const result = await res.json();
-                if (result && result.teams) {
-                    state = result;
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                if (result && result.record && result.record.teams) {
+                    state = result.record;
                     updateUI();
-                    setCloudBadge('online', 'متصل به جیست');
+                    setCloudBadge('online', 'ابری (آنلاین)');
                 }
             } catch (err) {
                 setCloudBadge('error');
-                if (manual) alert('خطا در دریافت اطلاعات از جیست.');
+                if (manual) alert('خطا در دریافت اطلاعات از سرور.');
             }
         }
 
-        function saveState() {
+        async function pushToCloud() {
+            setCloudBadge('syncing');
+            try {
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${jsonBinConfig.binId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': jsonBinConfig.apiKey
+                    },
+                    body: JSON.stringify(state)
+                });
+                setCloudBadge(res.ok ? 'online' : 'error', res.ok ? 'ابری (آنلاین)' : 'خطا');
+            } catch (err) {
+                setCloudBadge('error');
+            }
+        }
+
+        function saveState(syncCloud = true) {
             state.updatedAt = new Date().toISOString();
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
             updateUI();
+            if (syncCloud) pushToCloud();
         }
 
         function setHakem(teamId) {
             state.currentHakem = teamId;
-            saveState();
+            saveState(true);
         }
 
         function scoreHand(teamId) {
@@ -374,10 +389,10 @@
                 state.handHistoryStack = [];
                 state.currentHakem = teamId;
 
-                saveState();
+                saveState(true);
                 showWinModal(state.teams[teamId].name, winType, `نتیجه دست: ۷ بر ${loserHands}`, icon);
             } else {
-                saveState();
+                saveState(true);
             }
         }
 
@@ -388,7 +403,7 @@
                 state.teams[lastWinner].currentHands -= 1;
                 state.teams[lastWinner].totalHands = Math.max(0, state.teams[lastWinner].totalHands - 1);
             }
-            saveState();
+            saveState(true);
         }
 
         function resetCurrentMatch() {
@@ -399,7 +414,7 @@
                 state.teams[1].currentHands = 0;
                 state.teams[2].currentHands = 0;
                 state.handHistoryStack = [];
-                saveState();
+                saveState(true);
             }
         }
 
@@ -488,6 +503,10 @@
                     </div>
                 `).join('');
             }
+
+            document.getElementById('inputLeagueName').value = state.leagueName;
+            document.getElementById('inputTeam1Name').value = state.teams[1].name;
+            document.getElementById('inputTeam2Name').value = state.teams[2].name;
         }
 
         function showWinModal(winnerName, winType, scoreDesc, icon) {
@@ -512,9 +531,9 @@
             if (t1) state.teams[1].name = t1;
             if (t2) state.teams[2].name = t2;
 
-            saveState();
+            saveState(true);
             switchTab('game');
-            alert('نام تیم‌ها ذخیره شد.');
+            alert('نام تیم‌ها ذخیره و روی JSONBin سینک شد!');
         }
 
         function announceLeagueChampion() {
@@ -552,7 +571,7 @@
                     handHistoryStack: [],
                     matchHistory: []
                 };
-                saveState();
+                saveState(true);
                 switchTab('game');
             }
         }
