@@ -6,7 +6,6 @@
     <meta name="theme-color" content="#13233c">
     <title>لیگ حکم</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <style>
         @font-face {
@@ -29,7 +28,6 @@
         }
 
         :root {
-            /* پالت سرمه‌ای زنده‌تر و خوش‌رنگ‌تر */
             --tg-bg: #0f1e36;
             --tg-surface: #172a46;
             --tg-surface-active: #1f3657;
@@ -98,7 +96,7 @@
 
     <main class="max-w-md mx-auto px-3.5 mt-3 space-y-3">
 
-        <!-- Game Mode Segment Selector (2, 3 or 4 Players) -->
+        <!-- Mode Selector -->
         <div class="bg-[#172a46] p-1 rounded-2xl border border-[#27436b] flex gap-1 shadow-sm text-xs">
             <button onclick="setPlayerMode(4)" id="modeBtn-4" class="flex-1 py-1.5 rounded-xl font-bold transition flex items-center justify-center gap-1 bg-[#2a8eed] text-white shadow">
                 👥 ۴ نفره (تیمی)
@@ -114,14 +112,14 @@
         <!-- TAB 1: GAMEPLAY -->
         <div id="tab-game" class="tab-content space-y-3">
             
-            <!-- Match Status Summary Card -->
+            <!-- Summary Banner -->
             <div class="tg-surface rounded-2xl p-4 shadow-sm relative overflow-hidden">
                 <div class="flex justify-between items-center mb-3">
                     <span id="leagueNameDisplay" class="text-xs font-bold text-[#5db2ff] flex items-center gap-1">
                         🏆 لیگ حکم
                     </span>
                     <span id="leagueDaysDisplay" class="text-[11px] px-2.5 py-0.5 rounded-full bg-[#0c182b] text-[#8ba2c4] font-medium border border-[#27436b] persian-numbers">
-                        در حال بارگذاری...
+                        روز ۱ از ۳۰
                     </span>
                 </div>
 
@@ -195,17 +193,17 @@
                     </button>
                 </div>
 
-                <!-- Hakem Segment Control -->
+                <!-- Hakem Selection Bar (با کلاس قطعی برای مخفی ماندن دکمه ۳ در حالت ۲ و ۴ نفره) -->
                 <div class="bg-[#0c182b] p-1 rounded-xl flex gap-1 border border-[#27436b]">
-                    <button id="hakemBtn-1" onclick="setHakem(1)" class="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1">
+                    <button id="hakemBtn-1" onclick="setHakem(1)" class="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5">
                         <span>👑</span>
                         <span class="p1NameText truncate">نفر ۱</span>
                     </button>
-                    <button id="hakemBtn-2" onclick="setHakem(2)" class="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1">
+                    <button id="hakemBtn-2" onclick="setHakem(2)" class="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5">
                         <span>👑</span>
                         <span class="p2NameText truncate">نفر ۲</span>
                     </button>
-                    <button id="hakemBtn-3" onclick="setHakem(3)" class="hidden flex-1 py-1.5 px-2 rounded-lg text-xs font-bold transition items-center justify-center gap-1">
+                    <button id="hakemBtn-3" onclick="setHakem(3)" class="py-1.5 px-2 rounded-lg text-xs font-bold transition items-center justify-center gap-1.5" style="display: none;">
                         <span>👑</span>
                         <span class="p3NameText truncate">نفر ۳</span>
                     </button>
@@ -213,7 +211,6 @@
 
                 <!-- Counters Layout -->
                 <div id="countersContainer" class="grid grid-cols-2 gap-3">
-                    <!-- Column 1 -->
                     <div class="bg-[#0c182b] rounded-2xl p-3.5 border border-[#27436b] flex flex-col items-center">
                         <span class="p1NameText font-bold text-emerald-400 text-xs truncate max-w-[110px]">تیم اول</span>
                         <div id="p1CurrentHands" class="text-5xl font-black text-white my-1 persian-numbers">0</div>
@@ -223,7 +220,6 @@
                         </button>
                     </div>
 
-                    <!-- Column 2 -->
                     <div class="bg-[#0c182b] rounded-2xl p-3.5 border border-[#27436b] flex flex-col items-center">
                         <span class="p2NameText font-bold text-[#5db2ff] text-xs truncate max-w-[110px]">تیم دوم</span>
                         <div id="p2CurrentHands" class="text-5xl font-black text-white my-1 persian-numbers">0</div>
@@ -233,8 +229,7 @@
                         </button>
                     </div>
 
-                    <!-- Column 3 (Only visible in 3-Player mode) -->
-                    <div id="p3Col" class="hidden col-span-2 bg-[#0c182b] rounded-2xl p-3.5 border border-[#27436b] flex flex-col items-center">
+                    <div id="p3Col" class="col-span-2 bg-[#0c182b] rounded-2xl p-3.5 border border-[#27436b] flex flex-col items-center" style="display: none;">
                         <span class="p3NameText font-bold text-amber-400 text-xs truncate max-w-[150px]">نفر سوم</span>
                         <div id="p3CurrentHands" class="text-5xl font-black text-white my-1 persian-numbers">0</div>
                         <div id="p3Seeds" class="flex gap-1 h-3 mb-3 items-center justify-center"></div>
@@ -266,7 +261,7 @@
                     </div>
                 </div>
 
-                <!-- Stats Table Header (2 & 4 Players) -->
+                <!-- 2 & 4 Players Stats Header -->
                 <div id="statsTableHeader" class="grid grid-cols-12 items-center bg-[#0c182b] rounded-xl p-2.5 border border-[#27436b]">
                     <div class="col-span-6 text-[11px] font-bold text-[#8ba2c4]">شاخص مقایسه</div>
                     <div class="col-span-3 flex items-center justify-center gap-1.5">
@@ -278,14 +273,13 @@
                 </div>
 
                 <!-- 3 Players Stats Header -->
-                <div id="statsTable3Header" class="hidden grid-cols-12 items-center bg-[#0c182b] rounded-xl p-2.5 border border-[#27436b]">
+                <div id="statsTable3Header" class="grid grid-cols-12 items-center bg-[#0c182b] rounded-xl p-2.5 border border-[#27436b]" style="display: none;">
                     <div class="col-span-4 text-[11px] font-bold text-[#8ba2c4]">شاخص</div>
                     <div class="col-span-2 text-center text-xs font-bold text-emerald-400 truncate p1NameText">نفر ۱</div>
                     <div class="col-span-3 text-center text-xs font-bold text-[#5db2ff] truncate p2NameText">نفر ۲</div>
                     <div class="col-span-3 text-center text-xs font-bold text-amber-400 truncate p3NameText">نفر ۳</div>
                 </div>
 
-                <!-- Dynamic Rows (2/4 vs 3 Players) -->
                 <div id="statsRows" class="divide-y divide-[#27436b] text-xs"></div>
             </div>
         </div>
@@ -332,22 +326,19 @@
             <div class="tg-surface rounded-2xl p-4 shadow-sm space-y-3 text-xs">
                 <span class="text-xs font-bold text-white block pb-1 border-b border-[#27436b]">نام و تصاویر بازیکنان یا تیم‌ها</span>
                 
-                <!-- Player/Team 1 -->
                 <div class="space-y-1.5">
                     <label class="block text-emerald-400 font-bold" id="labelP1">تیم یا بازیکن اول:</label>
                     <input type="text" id="inputP1Name" class="w-full bg-[#0c182b] border border-[#27436b] rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-500">
                     <input type="file" id="inputP1AvatarFile" accept="image/*" class="w-full text-[#8ba2c4] file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-[#1f3657] file:text-emerald-400">
                 </div>
 
-                <!-- Player/Team 2 -->
                 <div class="space-y-1.5 pt-2 border-t border-[#27436b]">
                     <label class="block text-[#5db2ff] font-bold" id="labelP2">تیم یا بازیکن دوم:</label>
                     <input type="text" id="inputP2Name" class="w-full bg-[#0c182b] border border-[#27436b] rounded-xl px-3 py-2 text-white outline-none focus:border-[#2a8eed]">
                     <input type="file" id="inputP2AvatarFile" accept="image/*" class="w-full text-[#8ba2c4] file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-[#1f3657] file:text-[#5db2ff]">
                 </div>
 
-                <!-- Player 3 (Optional) -->
-                <div id="settingsP3Container" class="space-y-1.5 pt-2 border-t border-[#27436b]">
+                <div id="settingsP3Container" class="space-y-1.5 pt-2 border-t border-[#27436b]" style="display: none;">
                     <label class="block text-amber-400 font-bold">بازیکن سوم (مخصوص حالت ۳ نفره):</label>
                     <input type="text" id="inputP3Name" placeholder="نام بازیکن سوم" class="w-full bg-[#0c182b] border border-[#27436b] rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400">
                     <input type="file" id="inputP3AvatarFile" accept="image/*" class="w-full text-[#8ba2c4] file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-[#1f3657] file:text-amber-400">
@@ -370,7 +361,7 @@
 
     </main>
 
-    <!-- Bottom Navigation Bar (Floating Pill با استایل سرمه‌ای زنده) -->
+    <!-- Bottom Navigation Bar (Floating Pill) -->
     <nav class="fixed bottom-4 left-4 right-4 max-w-md mx-auto bg-[#172a46]/95 backdrop-blur-xl border border-[#34588c] rounded-2xl shadow-2xl z-40 px-2 py-1.5">
         <div class="grid grid-cols-4 text-center text-[10px]">
             <button onclick="switchTab('game')" id="nav-game" class="flex flex-col items-center gap-1 text-[#5db2ff] font-bold py-1.5 px-2 rounded-xl bg-[#2a8eed]/20 transition">
@@ -475,8 +466,8 @@
             leagueName: 'لیگ حکم',
             leagueLogo: '',
             playerMode: 4,
-            jalaliStart: '1405/07/28',
-            jalaliEnd: '1405/08/28',
+            jalaliStart: '1405/08/01',
+            jalaliEnd: '1405/08/30',
             championAnnounced: false,
             teams: {
                 1: { name: 'تیم اول', avatar: '', currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 },
@@ -490,14 +481,9 @@
 
         function setPlayerMode(mode) {
             state.playerMode = mode;
-            [2, 3, 4].forEach(m => {
-                const btn = document.getElementById(`modeBtn-${m}`);
-                if (m === mode) {
-                    btn.className = "flex-1 py-1.5 rounded-xl font-bold transition flex items-center justify-center gap-1 bg-[#2a8eed] text-white shadow";
-                } else {
-                    btn.className = "flex-1 py-1.5 rounded-xl font-medium transition flex items-center justify-center gap-1 text-[#8ba2c4]";
-                }
-            });
+            if (state.currentHakem === 3 && mode !== 3) {
+                state.currentHakem = 1;
+            }
             saveState(true);
         }
 
@@ -724,8 +710,8 @@
 
         function updateStatsTable() {
             const is3P = state.playerMode === 3;
-            document.getElementById('statsTableHeader').classList.toggle('hidden', is3P);
-            document.getElementById('statsTable3Header').classList.toggle('hidden', !is3P);
+            document.getElementById('statsTableHeader').style.display = is3P ? 'none' : 'grid';
+            document.getElementById('statsTable3Header').style.display = is3P ? 'grid' : 'none';
 
             const pWins = { 1: 0, 2: 0, 3: 0 };
             const pKoot = { 1: 0, 2: 0, 3: 0 };
@@ -800,13 +786,13 @@
             document.getElementById('leagueNameDisplay').innerText = state.leagueName;
             
             const is3P = state.playerMode === 3;
-            document.getElementById('summary2or4').classList.toggle('hidden', is3P);
-            document.getElementById('summary3').classList.toggle('hidden', !is3P);
-            document.getElementById('summary3').classList.toggle('grid', is3P);
+            document.getElementById('summary2or4').style.display = is3P ? 'none' : 'grid';
+            document.getElementById('summary3').style.display = is3P ? 'grid' : 'none';
 
-            document.getElementById('p3Col').classList.toggle('hidden', !is3P);
-            document.getElementById('hakemBtn-3').classList.toggle('hidden', !is3P);
-            document.getElementById('hakemBtn-3').classList.toggle('flex', is3P);
+            // نمایش یا عدم نمایش ستون نفر ۳ در بازی و دکمه حاکم
+            document.getElementById('p3Col').style.display = is3P ? 'flex' : 'none';
+            document.getElementById('hakemBtn-3').style.display = is3P ? 'flex' : 'none';
+            document.getElementById('settingsP3Container').style.display = is3P ? 'block' : 'none';
 
             [2, 3, 4].forEach(m => {
                 const btn = document.getElementById(`modeBtn-${m}`);
@@ -850,6 +836,7 @@
                 badge.className = 'mt-1 text-[10px] px-2 py-0.5 rounded-full bg-[#0c182b] text-[#8ba2c4] border border-[#27436b]';
             }
 
+            // برطرف شدن استایل دکمه‌های حاکم
             [1, 2, 3].forEach(id => {
                 const btn = document.getElementById(`hakemBtn-${id}`);
                 if (btn) {
@@ -870,6 +857,27 @@
             if (state.teams[3]) document.getElementById('p3Seeds').innerHTML = renderSeeds(state.teams[3].currentHands, 'bg-amber-400');
 
             document.getElementById('undoBtn').disabled = state.handHistoryStack.length === 0;
+
+            // رفع مشکل وضعیت «در حال بارگذاری»
+            const sDate = parseJalali(state.jalaliStart);
+            const eDate = parseJalali(state.jalaliEnd);
+            const now = new Date();
+            const daysEl = document.getElementById('leagueDaysDisplay');
+
+            if (sDate && eDate) {
+                const totalDays = Math.max(1, Math.round((eDate - sDate) / (1000 * 60 * 60 * 24)));
+                if (now < sDate) {
+                    const daysToStart = Math.ceil((sDate - now) / (1000 * 60 * 60 * 24));
+                    daysEl.innerText = `${daysToStart.toLocaleString('fa-IR')} روز تا آغاز`;
+                } else if (now > eDate) {
+                    daysEl.innerText = `🏁 پایان دوره`;
+                } else {
+                    const passedDays = Math.min(totalDays, Math.max(1, Math.ceil((now - sDate) / (1000 * 60 * 60 * 24))));
+                    daysEl.innerText = `روز ${passedDays.toLocaleString('fa-IR')} از ${totalDays.toLocaleString('fa-IR')}`;
+                }
+            } else {
+                daysEl.innerText = `روز ۱ از ۳۰`;
+            }
 
             updateStatsTable();
 
@@ -893,8 +901,8 @@
             }
 
             document.getElementById('inputLeagueName').value = state.leagueName;
-            document.getElementById('inputJalaliStart').value = state.jalaliStart || '1405/07/28';
-            document.getElementById('inputJalaliEnd').value = state.jalaliEnd || '1405/08/28';
+            document.getElementById('inputJalaliStart').value = state.jalaliStart || '1405/08/01';
+            document.getElementById('inputJalaliEnd').value = state.jalaliEnd || '1405/08/30';
             document.getElementById('inputP1Name').value = state.teams[1].name;
             document.getElementById('inputP2Name').value = state.teams[2].name;
             if (state.teams[3]) document.getElementById('inputP3Name').value = state.teams[3].name;
