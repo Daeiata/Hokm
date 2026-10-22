@@ -69,7 +69,7 @@
 </head>
 <body class="min-h-screen pb-32 antialiased">
 
-    <!-- Header -->
+    <!-- Top App Bar -->
     <header class="sticky top-0 z-40 bg-[#13233c]/95 backdrop-blur-md border-b border-[#27436b] px-4 py-2.5 flex items-center justify-between shadow-md">
         <div class="flex items-center gap-3">
             <div id="leagueLogoHeaderContainer" class="w-9 h-9 rounded-full overflow-hidden bg-[#1f3657] flex items-center justify-center border border-[#3b5e94]">
@@ -112,11 +112,11 @@
         <!-- TAB 1: GAMEPLAY -->
         <div id="tab-game" class="tab-content space-y-3">
             
-            <!-- Summary Banner -->
+            <!-- Summary Banner: جدول مسابقات برده لیگ -->
             <div class="tg-surface rounded-2xl p-4 shadow-sm relative overflow-hidden">
                 <div class="flex justify-between items-center mb-3">
                     <span id="leagueNameDisplay" class="text-xs font-bold text-[#5db2ff] flex items-center gap-1">
-                        🏆 لیگ حکم
+                        🏆 بردهای لیگ ماهانه
                     </span>
                     <span id="leagueDaysDisplay" class="text-[11px] px-2.5 py-0.5 rounded-full bg-[#0c182b] text-[#8ba2c4] font-medium border border-[#27436b] persian-numbers">
                         روز ۱ از ۳۰
@@ -132,7 +132,7 @@
                         </div>
                         <span id="summaryP1Name" class="text-xs font-bold text-white mt-1.5 truncate max-w-[95px]">تیم اول</span>
                         <div id="summaryP1Wins" class="text-3xl font-black text-emerald-400 mt-0.5 persian-numbers">0</div>
-                        <span class="text-[10px] text-[#8ba2c4]">بردهای لیگ</span>
+                        <span class="text-[10px] text-[#8ba2c4]">مسابقه برده</span>
                     </div>
 
                     <div class="flex flex-col items-center justify-center">
@@ -147,7 +147,7 @@
                         </div>
                         <span id="summaryP2Name" class="text-xs font-bold text-white mt-1.5 truncate max-w-[95px]">تیم دوم</span>
                         <div id="summaryP2Wins" class="text-3xl font-black text-[#5db2ff] mt-0.5 persian-numbers">0</div>
-                        <span class="text-[10px] text-[#8ba2c4]">بردهای لیگ</span>
+                        <span class="text-[10px] text-[#8ba2c4]">مسابقه برده</span>
                     </div>
                 </div>
 
@@ -160,7 +160,7 @@
                         </div>
                         <span class="p1NameText text-[11px] font-bold text-white truncate max-w-[80px]">نفر ۱</span>
                         <div id="summary3P1Wins" class="text-2xl font-black text-emerald-400 persian-numbers">0</div>
-                        <span class="text-[9px] text-[#8ba2c4]">برد</span>
+                        <span class="text-[9px] text-[#8ba2c4]">مسابقه</span>
                     </div>
                     <div class="flex flex-col items-center tg-inner p-2 rounded-xl">
                         <div class="w-10 h-10 rounded-full border-2 border-[#5db2ff]/50 bg-[#172a46] overflow-hidden flex items-center justify-center mb-1">
@@ -169,7 +169,7 @@
                         </div>
                         <span class="p2NameText text-[11px] font-bold text-white truncate max-w-[80px]">نفر ۲</span>
                         <div id="summary3P2Wins" class="text-2xl font-black text-[#5db2ff] persian-numbers">0</div>
-                        <span class="text-[9px] text-[#8ba2c4]">برد</span>
+                        <span class="text-[9px] text-[#8ba2c4]">مسابقه</span>
                     </div>
                     <div class="flex flex-col items-center tg-inner p-2 rounded-xl">
                         <div class="w-10 h-10 rounded-full border-2 border-amber-400/50 bg-[#172a46] overflow-hidden flex items-center justify-center mb-1">
@@ -178,19 +178,44 @@
                         </div>
                         <span class="p3NameText text-[11px] font-bold text-white truncate max-w-[80px]">نفر ۳</span>
                         <div id="summary3P3Wins" class="text-2xl font-black text-amber-400 persian-numbers">0</div>
-                        <span class="text-[9px] text-[#8ba2c4]">برد</span>
+                        <span class="text-[9px] text-[#8ba2c4]">مسابقه</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Active Board -->
+            <!-- Active Match Panel: شمارنده گیم‌های بازی جاری (هدف ۷ گیم) -->
+            <div class="tg-surface rounded-2xl p-3.5 shadow-sm space-y-2">
+                <div class="flex justify-between items-center text-xs">
+                    <span class="font-bold text-amber-300 flex items-center gap-1.5">
+                        <span class="text-base">🎯</span>
+                        گیم‌های مسابقه جاری (اولین تیمی که ۷ گیم بگیرد برنده مسابقه است)
+                    </span>
+                </div>
+                
+                <div id="gamesScoreRow" class="grid grid-cols-2 gap-2 text-center">
+                    <div class="bg-[#0c182b] p-2 rounded-xl border border-[#27436b]">
+                        <span class="text-[11px] text-emerald-400 font-bold p1NameText truncate block">تیم ۱</span>
+                        <div id="p1CurrentGames" class="text-2xl font-black text-white persian-numbers">0 / 7</div>
+                    </div>
+                    <div class="bg-[#0c182b] p-2 rounded-xl border border-[#27436b]">
+                        <span class="text-[11px] text-[#5db2ff] font-bold p2NameText truncate block">تیم ۲</span>
+                        <div id="p2CurrentGames" class="text-2xl font-black text-white persian-numbers">0 / 7</div>
+                    </div>
+                    <div id="p3GamesBox" class="col-span-2 bg-[#0c182b] p-2 rounded-xl border border-[#27436b]" style="display: none;">
+                        <span class="text-[11px] text-amber-400 font-bold p3NameText truncate block">نفر ۳</span>
+                        <div id="p3CurrentGames" class="text-2xl font-black text-white persian-numbers">0 / 7</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Hand Board: شمارش دست‌های خرد (هدف ۷ دست) -->
             <div class="tg-surface rounded-2xl p-4 shadow-sm space-y-4">
                 
                 <div class="flex justify-between items-center">
                     <div>
                         <span class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                            بازی جاری (اولین ۷ دست = ثبت ۱ برد در جدول)
+                            شمارش دست‌های گیم فعلی (هدف: ۷ دست)
                         </span>
                     </div>
                     <button onclick="undoLastHand()" id="undoBtn" class="text-xs text-[#5db2ff] active:opacity-60 disabled:opacity-30 transition flex items-center gap-1 font-medium" disabled>
@@ -244,9 +269,12 @@
                     </div>
                 </div>
 
-                <div class="text-center pt-1">
-                    <button onclick="resetCurrentMatch()" class="text-[11px] text-[#8ba2c4] active:text-red-400 transition font-medium">
-                        صفر کردن شمارنده دست فعلی
+                <div class="flex justify-between items-center pt-1 text-[11px]">
+                    <button onclick="resetCurrentHandsOnly()" class="text-[#8ba2c4] active:text-amber-400 transition font-medium">
+                        صفر کردن دست‌های این گیم
+                    </button>
+                    <button onclick="resetCurrentMatchGames()" class="text-[#8ba2c4] active:text-red-400 transition font-medium">
+                        ریست گیم‌های مسابقه جاری
                     </button>
                 </div>
 
@@ -257,7 +285,7 @@
         <div id="tab-stats" class="tab-content space-y-3 hidden">
             <div class="tg-surface rounded-2xl p-4 shadow-sm space-y-3.5">
                 <div class="flex justify-between items-center">
-                    <span class="text-xs font-bold text-white">جدول بردهای لیگ</span>
+                    <span class="text-xs font-bold text-white">جدول نتایج مسابقات لیگ</span>
                     
                     <div class="bg-[#0c182b] p-1 rounded-xl flex border border-[#27436b] text-[11px]">
                         <button onclick="changeStatPeriod('month')" id="btnStatPeriod-month" class="px-3 py-1 rounded-lg font-bold bg-[#2a8eed] text-white transition">ماهانه</button>
@@ -266,9 +294,9 @@
                     </div>
                 </div>
 
-                <!-- 2 & 4 Players Stats Header -->
+                <!-- 2 & 4 Players Header -->
                 <div id="statsTableHeader" class="grid grid-cols-12 items-center bg-[#0c182b] rounded-xl p-2.5 border border-[#27436b]">
-                    <div class="col-span-6 text-[11px] font-bold text-[#8ba2c4]">شاخص</div>
+                    <div class="col-span-6 text-[11px] font-bold text-[#8ba2c4]">شاخص مقایسه</div>
                     <div class="col-span-3 flex items-center justify-center gap-1.5">
                         <span class="p1NameText text-xs font-bold text-emerald-400 truncate max-w-[55px]">تیم ۱</span>
                     </div>
@@ -277,7 +305,7 @@
                     </div>
                 </div>
 
-                <!-- 3 Players Stats Header -->
+                <!-- 3 Players Header -->
                 <div id="statsTable3Header" class="grid grid-cols-12 items-center bg-[#0c182b] rounded-xl p-2.5 border border-[#27436b]" style="display: none;">
                     <div class="col-span-4 text-[11px] font-bold text-[#8ba2c4]">شاخص</div>
                     <div class="col-span-2 text-center text-xs font-bold text-emerald-400 truncate p1NameText">نفر ۱</div>
@@ -293,8 +321,8 @@
         <div id="tab-history" class="tab-content space-y-3 hidden">
             <div class="tg-surface rounded-2xl p-4 shadow-sm space-y-2">
                 <div class="flex justify-between items-center mb-1">
-                    <span class="text-xs font-bold text-white">بازی‌های ثبت‌شده در لیگ</span>
-                    <span id="totalGamesPlayed" class="text-[11px] text-[#8ba2c4] persian-numbers">۰ بازی</span>
+                    <span class="text-xs font-bold text-white">تاریخچه مسابقات اتمام‌یافته لیگ</span>
+                    <span id="totalGamesPlayed" class="text-[11px] text-[#8ba2c4] persian-numbers">۰ مسابقه</span>
                 </div>
                 <div id="historyList" class="space-y-2 max-h-[65vh] overflow-y-auto"></div>
             </div>
@@ -356,7 +384,7 @@
 
             <div class="tg-surface rounded-2xl p-3.5 shadow-sm space-y-2 text-xs">
                 <button onclick="announceLeagueChampion(false)" class="w-full bg-[#1f3657] active:bg-[#27436b] text-[#5db2ff] font-bold py-2.5 rounded-xl transition border border-[#27436b]">
-                    🏆 اعلام قهرمان فعلی ماه
+                    🏆 اعلام قهرمان ماهانه (بیشترین برد مسابقه)
                 </button>
                 <button onclick="hardResetLeague()" class="w-full bg-red-950/30 active:bg-red-950/50 text-red-400 py-2 rounded-xl transition border border-red-900/40">
                     ریست کامل بردهای لیگ
@@ -392,10 +420,10 @@
     <div id="winModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
         <div class="tg-surface border border-[#34588c] rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl">
             <div id="winModalIcon" class="text-5xl mb-2">🎉</div>
-            <h3 id="winModalTitle" class="text-lg font-bold text-white mb-1">پایان بازی!</h3>
+            <h3 id="winModalTitle" class="text-lg font-bold text-white mb-1">پایان!</h3>
             <p id="winModalDesc" class="text-xs text-[#5db2ff] font-medium mb-6 persian-numbers"></p>
             <button onclick="closeWinModal()" class="w-full bg-[#2a8eed] active:bg-[#2072c4] text-white font-bold py-3 rounded-2xl transition shadow-lg shadow-blue-500/20">
-                شروع بازی بعدی
+                ادامه
             </button>
         </div>
     </div>
@@ -475,9 +503,9 @@
             jalaliEnd: '1405/08/30',
             championAnnounced: false,
             teams: {
-                1: { name: 'تیم اول', avatar: '', currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 },
-                2: { name: 'تیم دوم', avatar: '', currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 },
-                3: { name: 'نفر سوم', avatar: '', currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 }
+                1: { name: 'تیم اول', avatar: '', currentHands: 0, currentGames: 0, matchWins: 0, totalHands: 0, totalGames: 0 },
+                2: { name: 'تیم دوم', avatar: '', currentHands: 0, currentGames: 0, matchWins: 0, totalHands: 0, totalGames: 0 },
+                3: { name: 'نفر سوم', avatar: '', currentHands: 0, currentGames: 0, matchWins: 0, totalHands: 0, totalGames: 0 }
             },
             currentHakem: 1,
             handHistoryStack: [],
@@ -537,9 +565,13 @@
                 const result = await res.json();
                 if (result && result.record && result.record.teams) {
                     state = Object.assign(state, result.record);
-                    if (!state.teams[3]) {
-                        state.teams[3] = { name: 'نفر سوم', avatar: '', currentHands: 0, matchWins: 0, kootCount: 0, hakemKootCount: 0, totalHands: 0 };
-                    }
+                    [1, 2, 3].forEach(id => {
+                        if (!state.teams[id]) {
+                            state.teams[id] = { name: `تیم ${id}`, avatar: '', currentHands: 0, currentGames: 0, matchWins: 0, totalHands: 0, totalGames: 0 };
+                        }
+                        if (state.teams[id].currentGames === undefined) state.teams[id].currentGames = 0;
+                        if (state.teams[id].totalGames === undefined) state.teams[id].totalGames = 0;
+                    });
                     updateUI();
                     setCloudBadge('online');
                     checkAutoLeagueEnd();
@@ -589,61 +621,95 @@
             saveState(true);
         }
 
-        // منطق لیگ: هر تیمی به ۷ دست رسید = ۱ بازی را برده و ۱ برد به جدول لیگ اضافه می‌شود
+        // منطق کامل: ۷ دست = ۱ گیم برده | ۷ گیم = ۱ مسابقه برده در لیگ
         function scoreHand(teamId) {
             state.handHistoryStack.push(teamId);
             state.teams[teamId].currentHands += 1;
             state.teams[teamId].totalHands += 1;
 
+            // مرحله ۱: بررسی رسیدن به ۷ دست (پایان گیم)
             if (state.teams[teamId].currentHands >= 7) {
-                let winType = 'برد بازی';
-                let icon = '🎉';
-                let scoreDesc = '';
+                let gamesWon = 1;
+                let winType = 'برد گیم (+۱ گیم)';
+                let icon = '🎯';
 
                 if (state.playerMode === 3) {
                     const otherPlayers = [1, 2, 3].filter(id => id !== teamId);
-                    scoreDesc = `۷ در برابر (${state.teams[otherPlayers[0]].currentHands} و ${state.teams[otherPlayers[1]].currentHands})`;
+                    const zeroCount = otherPlayers.filter(id => state.teams[id].currentHands === 0).length;
+                    if (zeroCount === 2) {
+                        gamesWon = 3;
+                        winType = 'کوت ۳ نفره (+۳ گیم)';
+                        icon = '🔥👑';
+                    }
                 } else {
                     const loserId = teamId === 1 ? 2 : 1;
                     const loserHands = state.teams[loserId].currentHands;
-                    scoreDesc = `۷ بر ${loserHands}`;
                     if (loserHands === 0) {
-                        winType = (state.currentHakem === loserId) ? 'حاکم‌کوت' : 'کوت';
-                        icon = '🔥👑';
+                        if (state.currentHakem === loserId) {
+                            gamesWon = 3;
+                            winType = 'حاکم‌کوتی (+۳ گیم)';
+                            icon = '🔥👑';
+                        } else {
+                            gamesWon = 2;
+                            winType = 'کوت (+۲ گیم)';
+                            icon = '⚡';
+                        }
                     }
                 }
 
-                // ثبت ۱ برد مستقیم به حساب تیم در لیگ
-                state.teams[teamId].matchWins += 1;
+                // اضافه شدن گیم‌های برده به تیم
+                state.teams[teamId].currentGames += gamesWon;
+                state.teams[teamId].totalGames = (state.teams[teamId].totalGames || 0) + gamesWon;
 
-                const now = new Date();
-                const [jy, jm, jd] = gregorianToJalali(now.getFullYear(), now.getMonth() + 1, now.getDate());
-                const jalaliDateStr = `${jy}/${String(jm).padStart(2, '0')}/${String(jd).padStart(2, '0')}`;
-                const timeStr = `${jalaliDateStr} · ${now.toLocaleTimeString('fa-IR', {hour: '2-digit', minute:'2-digit'})}`;
-
-                state.matchHistory.unshift({
-                    winnerTeamId: teamId,
-                    winner: state.teams[teamId].name,
-                    score: scoreDesc,
-                    type: winType,
-                    points: 1, // هر دست کامل ۷ تایی = ۱ برد
-                    date: timeStr,
-                    playerMode: state.playerMode,
-                    jalaliYear: jy,
-                    jalaliMonth: jm,
-                    jalaliDay: jd
-                });
-
-                if (state.matchHistory.length > 200) state.matchHistory.pop();
-
-                // صفر کردن دست‌های جاری برای شروع بازی بعدی
+                // صفر کردن دست‌های خرد برای گیم بعدی
                 state.teams[1].currentHands = 0;
                 state.teams[2].currentHands = 0;
                 if (state.teams[3]) state.teams[3].currentHands = 0;
                 state.handHistoryStack = [];
                 state.currentHakem = teamId;
 
-                showWinModal(state.teams[teamId].name, `${winType} ثبت شد! (+۱ برد در لیگ)`, `نتیجه بازی: ${scoreDesc} | مجموع بردهای لیگ: ${state.teams[teamId].matchWins}`, icon);
+                // مرحله ۲: بررسی رسیدن به ۷ گیم (پایان مسابقه و ثبت برد در لیگ)
+                if (state.teams[teamId].currentGames >= 7) {
+                    state.teams[teamId].matchWins += 1;
+
+                    const now = new Date();
+                    const [jy, jm, jd] = gregorianToJalali(now.getFullYear(), now.getMonth() + 1, now.getDate());
+                    const jalaliDateStr = `${jy}/${String(jm).padStart(2, '0')}/${String(jd).padStart(2, '0')}`;
+                    const timeStr = `${jalaliDateStr} · ${now.toLocaleTimeString('fa-IR', {hour: '2-digit', minute:'2-digit'})}`;
+
+                    let finalScoreDesc = '';
+                    if (state.playerMode === 3) {
+                        finalScoreDesc = `${state.teams[1].currentGames} - ${state.teams[2].currentGames} - ${state.teams[3].currentGames}`;
+                    } else {
+                        const loserId = teamId === 1 ? 2 : 1;
+                        finalScoreDesc = `${state.teams[teamId].currentGames} بر ${state.teams[loserId].currentGames} (گیم)`;
+                    }
+
+                    state.matchHistory.unshift({
+                        winnerTeamId: teamId,
+                        winner: state.teams[teamId].name,
+                        score: finalScoreDesc,
+                        type: 'برد کامل مسابقه لیگ',
+                        points: 1,
+                        date: timeStr,
+                        playerMode: state.playerMode,
+                        jalaliYear: jy,
+                        jalaliMonth: jm,
+                        jalaliDay: jd
+                    });
+
+                    if (state.matchHistory.length > 200) state.matchHistory.pop();
+
+                    // صفر کردن گیم‌های مسابقه فعلی برای آغاز مسابقه جدید
+                    state.teams[1].currentGames = 0;
+                    state.teams[2].currentGames = 0;
+                    if (state.teams[3]) state.teams[3].currentGames = 0;
+
+                    showWinModal(state.teams[teamId].name, `🏆 پیروزی در مسابقه و کسب ۱ برد در لیگ!`, `این تیم با کسب ۷ گیم برنده بازی شد. مجموع بردهای لیگ این تیم: ${state.teams[teamId].matchWins}`, '👑');
+                } else {
+                    showWinModal(state.teams[teamId].name, winType, `مجموع گیم‌های فعلی مسابقه: ${state.teams[teamId].currentGames} از ۷`, icon);
+                }
+
                 saveState(true);
             } else {
                 saveState(true);
@@ -660,8 +726,8 @@
             saveState(true);
         }
 
-        function resetCurrentMatch() {
-            if (confirm('شمارش دست‌های بازی فعلی صفر شود؟')) {
+        function resetCurrentHandsOnly() {
+            if (confirm('دست‌های خرد این گیم صفر شود؟ (گیم‌های برده حفظ می‌شوند)')) {
                 state.teams[1].totalHands -= state.teams[1].currentHands;
                 state.teams[2].totalHands -= state.teams[2].currentHands;
                 if (state.teams[3]) state.teams[3].totalHands -= state.teams[3].currentHands;
@@ -669,6 +735,21 @@
                 state.teams[1].currentHands = 0;
                 state.teams[2].currentHands = 0;
                 if (state.teams[3]) state.teams[3].currentHands = 0;
+                state.handHistoryStack = [];
+                saveState(true);
+            }
+        }
+
+        function resetCurrentMatchGames() {
+            if (confirm('گیم‌های مسابقه جاری صفر شود؟ (بردهای ثبت‌شده لیگ در جدول ماهانه دست‌نخورده باقی می‌مانند)')) {
+                state.teams[1].currentHands = 0;
+                state.teams[1].currentGames = 0;
+                state.teams[2].currentHands = 0;
+                state.teams[2].currentGames = 0;
+                if (state.teams[3]) {
+                    state.teams[3].currentHands = 0;
+                    state.teams[3].currentGames = 0;
+                }
                 state.handHistoryStack = [];
                 saveState(true);
             }
@@ -697,7 +778,6 @@
             updateStatsTable();
         }
 
-        // شمارش تعداد بردها در طول ماه یا سال
         function updateStatsTable() {
             const is3P = state.playerMode === 3;
             document.getElementById('statsTableHeader').style.display = is3P ? 'none' : 'grid';
@@ -722,12 +802,17 @@
             if (!is3P) {
                 rowsContainer.innerHTML = `
                     <div class="grid grid-cols-12 items-center py-3">
-                        <span class="col-span-6 text-slate-200 font-medium">تعداد کل بردها</span>
+                        <span class="col-span-6 text-slate-200 font-medium">مسابقات برده در لیگ (رسیدن به ۷ گیم)</span>
                         <div class="col-span-3 text-center font-black text-sm text-emerald-400 persian-numbers">${pWins[1]}</div>
                         <div class="col-span-3 text-center font-black text-sm text-[#5db2ff] persian-numbers">${pWins[2]}</div>
                     </div>
                     <div class="grid grid-cols-12 items-center py-3">
-                        <span class="col-span-6 text-[#8ba2c4]">دست‌های انفرادی برده</span>
+                        <span class="col-span-6 text-[#8ba2c4]">کل گیم‌های برده‌شده (تاکنون)</span>
+                        <div class="col-span-3 text-center font-bold text-amber-400 persian-numbers">${state.teams[1].totalGames || 0}</div>
+                        <div class="col-span-3 text-center font-bold text-amber-400 persian-numbers">${state.teams[2].totalGames || 0}</div>
+                    </div>
+                    <div class="grid grid-cols-12 items-center py-3">
+                        <span class="col-span-6 text-[#8ba2c4]">کل دست‌های انفرادی برده</span>
                         <div class="col-span-3 text-center font-bold text-slate-300 persian-numbers">${state.teams[1].totalHands}</div>
                         <div class="col-span-3 text-center font-bold text-slate-300 persian-numbers">${state.teams[2].totalHands}</div>
                     </div>
@@ -735,13 +820,19 @@
             } else {
                 rowsContainer.innerHTML = `
                     <div class="grid grid-cols-12 items-center py-3">
-                        <span class="col-span-4 text-slate-200 font-medium">تعداد کل بردها</span>
+                        <span class="col-span-4 text-slate-200 font-medium">مسابقات برده</span>
                         <div class="col-span-2 text-center font-black text-sm text-emerald-400 persian-numbers">${pWins[1]}</div>
                         <div class="col-span-3 text-center font-black text-sm text-[#5db2ff] persian-numbers">${pWins[2]}</div>
                         <div class="col-span-3 text-center font-black text-sm text-amber-400 persian-numbers">${pWins[3]}</div>
                     </div>
                     <div class="grid grid-cols-12 items-center py-3">
-                        <span class="col-span-4 text-[#8ba2c4]">دست‌های انفرادی برده</span>
+                        <span class="col-span-4 text-[#8ba2c4]">کل گیم‌ها</span>
+                        <div class="col-span-2 text-center font-bold text-amber-400 persian-numbers">${state.teams[1].totalGames || 0}</div>
+                        <div class="col-span-3 text-center font-bold text-amber-400 persian-numbers">${state.teams[2].totalGames || 0}</div>
+                        <div class="col-span-3 text-center font-bold text-amber-400 persian-numbers">${state.teams[3] ? (state.teams[3].totalGames || 0) : 0}</div>
+                    </div>
+                    <div class="grid grid-cols-12 items-center py-3">
+                        <span class="col-span-4 text-[#8ba2c4]">کل دست‌ها</span>
                         <div class="col-span-2 text-center font-bold text-slate-300 persian-numbers">${state.teams[1].totalHands}</div>
                         <div class="col-span-3 text-center font-bold text-slate-300 persian-numbers">${state.teams[2].totalHands}</div>
                         <div class="col-span-3 text-center font-bold text-slate-300 persian-numbers">${state.teams[3] ? state.teams[3].totalHands : 0}</div>
@@ -760,6 +851,7 @@
 
             document.getElementById('p3Col').style.display = is3P ? 'flex' : 'none';
             document.getElementById('hakemBtn-3').style.display = is3P ? 'flex' : 'none';
+            document.getElementById('p3GamesBox').style.display = is3P ? 'block' : 'none';
             document.getElementById('settingsP3Container').style.display = is3P ? 'block' : 'none';
 
             [2, 3, 4].forEach(m => {
@@ -804,6 +896,25 @@
                 badge.className = 'mt-1 text-[10px] px-2 py-0.5 rounded-full bg-[#0c182b] text-[#8ba2c4] border border-[#27436b]';
             }
 
+            // گیم‌های بازی فعلی
+            document.getElementById('p1CurrentGames').innerText = `${state.teams[1].currentGames.toLocaleString('fa-IR')} / ۷`;
+            document.getElementById('p2CurrentGames').innerText = `${state.teams[2].currentGames.toLocaleString('fa-IR')} / ۷`;
+            if (state.teams[3]) {
+                document.getElementById('p3CurrentGames').innerText = `${state.teams[3].currentGames.toLocaleString('fa-IR')} / ۷`;
+            }
+
+            // دست‌های خرد گیم فعلی
+            document.getElementById('p1CurrentHands').innerText = state.teams[1].currentHands.toLocaleString('fa-IR');
+            document.getElementById('p2CurrentHands').innerText = state.teams[2].currentHands.toLocaleString('fa-IR');
+            if (state.teams[3]) document.getElementById('p3CurrentHands').innerText = state.teams[3].currentHands.toLocaleString('fa-IR');
+
+            document.getElementById('p1Seeds').innerHTML = renderSeeds(state.teams[1].currentHands, 'bg-emerald-400');
+            document.getElementById('p2Seeds').innerHTML = renderSeeds(state.teams[2].currentHands, 'bg-[#5db2ff]');
+            if (state.teams[3]) document.getElementById('p3Seeds').innerHTML = renderSeeds(state.teams[3].currentHands, 'bg-amber-400');
+
+            document.getElementById('undoBtn').disabled = state.handHistoryStack.length === 0;
+
+            // حاکم
             [1, 2, 3].forEach(id => {
                 const btn = document.getElementById(`hakemBtn-${id}`);
                 if (btn) {
@@ -815,16 +926,7 @@
                 }
             });
 
-            document.getElementById('p1CurrentHands').innerText = state.teams[1].currentHands.toLocaleString('fa-IR');
-            document.getElementById('p2CurrentHands').innerText = state.teams[2].currentHands.toLocaleString('fa-IR');
-            if (state.teams[3]) document.getElementById('p3CurrentHands').innerText = state.teams[3].currentHands.toLocaleString('fa-IR');
-
-            document.getElementById('p1Seeds').innerHTML = renderSeeds(state.teams[1].currentHands, 'bg-emerald-400');
-            document.getElementById('p2Seeds').innerHTML = renderSeeds(state.teams[2].currentHands, 'bg-[#5db2ff]');
-            if (state.teams[3]) document.getElementById('p3Seeds').innerHTML = renderSeeds(state.teams[3].currentHands, 'bg-amber-400');
-
-            document.getElementById('undoBtn').disabled = state.handHistoryStack.length === 0;
-
+            // تقویم
             const sDate = parseJalali(state.jalaliStart);
             const eDate = parseJalali(state.jalaliEnd);
             const now = new Date();
@@ -847,10 +949,10 @@
 
             updateStatsTable();
 
-            document.getElementById('totalGamesPlayed').innerText = `${state.matchHistory.length.toLocaleString('fa-IR')} بازی`;
+            document.getElementById('totalGamesPlayed').innerText = `${state.matchHistory.length.toLocaleString('fa-IR')} مسابقه`;
             const historyContainer = document.getElementById('historyList');
             if (state.matchHistory.length === 0) {
-                historyContainer.innerHTML = `<div class="text-[#8ba2c4] text-center py-8 text-xs">هنوز بازی‌ای ثبت نشده است.</div>`;
+                historyContainer.innerHTML = `<div class="text-[#8ba2c4] text-center py-8 text-xs">هنوز مسابقه‌ای در این ماه ثبت نشده است.</div>`;
             } else {
                 historyContainer.innerHTML = state.matchHistory.map(item => `
                     <div class="bg-[#0c182b] p-3 rounded-xl border border-[#27436b] flex justify-between items-center text-xs">
@@ -860,7 +962,7 @@
                             <div class="text-[10px] text-[#8ba2c4] mt-0.5 persian-numbers">${item.date}</div>
                         </div>
                         <span class="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-[#172a46] text-[#5db2ff] border border-[#27436b]">
-                            +۱ برد
+                            +۱ مسابقه در لیگ
                         </span>
                     </div>
                 `).join('');
@@ -984,7 +1086,6 @@
             document.getElementById('winModal').classList.remove('flex');
         }
 
-        // شمارش و مقایسه بردهای ماه برای اعلام قهرمان
         function announceLeagueChampion(isAuto = false) {
             const is3P = state.playerMode === 3;
             let title = '', desc = '';
@@ -1001,28 +1102,26 @@
 
             if (scores[0].wins > scores[1].wins) {
                 title = `🏆 قهرمان لیگ: ${scores[0].name}`;
-                desc = `${isAuto ? '🏁 پایان رسمی ماه: ' : ''}با کسب ${scores[0].wins} برد در این دوره ماهانه!`;
+                desc = `${isAuto ? '🏁 پایان رسمی ماه: ' : ''}با کسب ${scores[0].wins} مسابقه برده در این دوره!`;
             } else {
                 title = `🤝 پایان دوره: مساوی`;
-                desc = `هر دو با امتیاز برابر ${scores[0].wins} برد ماه را به پایان رساندند.`;
+                desc = `هر دو تیم با امتیاز برابر ${scores[0].wins} مسابقه، ماه را به پایان رساندند.`;
             }
 
-            showWinModal(title, desc, `مجموع بازی‌های انجام‌شده: ${state.matchHistory.length}`, '👑');
+            showWinModal(title, desc, `مجموع مسابقات ثبت شده: ${state.matchHistory.length}`, '👑');
         }
 
         function hardResetLeague() {
-            if (confirm('کل بردهای لیگ صفر شود؟')) {
-                state.teams[1].currentHands = 0;
-                state.teams[1].matchWins = 0;
-                state.teams[1].totalHands = 0;
-                state.teams[2].currentHands = 0;
-                state.teams[2].matchWins = 0;
-                state.teams[2].totalHands = 0;
-                if (state.teams[3]) {
-                    state.teams[3].currentHands = 0;
-                    state.teams[3].matchWins = 0;
-                    state.teams[3].totalHands = 0;
-                }
+            if (confirm('کل بردهای لیگ و گیم‌ها صفر شود؟')) {
+                [1, 2, 3].forEach(id => {
+                    if (state.teams[id]) {
+                        state.teams[id].currentHands = 0;
+                        state.teams[id].currentGames = 0;
+                        state.teams[id].matchWins = 0;
+                        state.teams[id].totalHands = 0;
+                        state.teams[id].totalGames = 0;
+                    }
+                });
                 state.handHistoryStack = [];
                 state.matchHistory = [];
                 state.championAnnounced = false;
