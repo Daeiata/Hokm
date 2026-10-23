@@ -62,6 +62,16 @@
             font-feature-settings: "ss01" on, "tnum" on;
         }
 
+        /* جلوه لمس کارت بزرگ */
+        .touch-card {
+            cursor: pointer;
+            transition: transform 0.1s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .touch-card:active {
+            transform: scale(0.96);
+            box-shadow: 0 0 20px rgba(42, 142, 237, 0.35);
+        }
+
         ::-webkit-scrollbar {
             display: none;
         }
@@ -112,9 +122,9 @@
         <!-- TAB 1: GAMEPLAY -->
         <div id="tab-game" class="tab-content space-y-3">
             
-            <!-- Summary Banner: جدول مسابقات برده لیگ -->
-            <div class="tg-surface rounded-2xl p-4 shadow-sm relative overflow-hidden">
-                <div class="flex justify-between items-center mb-3">
+            <!-- Summary Banner -->
+            <div class="tg-surface rounded-2xl p-3.5 shadow-sm relative overflow-hidden">
+                <div class="flex justify-between items-center mb-2">
                     <span id="leagueNameDisplay" class="text-xs font-bold text-[#5db2ff] flex items-center gap-1">
                         🏆 بردهای لیگ ماهانه
                     </span>
@@ -126,13 +136,13 @@
                 <!-- 2 & 4 Players View -->
                 <div id="summary2or4" class="grid grid-cols-3 items-center py-1">
                     <div class="flex flex-col items-center">
-                        <div class="w-12 h-12 rounded-full border-2 border-emerald-400/50 bg-[#0c182b] overflow-hidden flex items-center justify-center shadow-inner">
+                        <div class="w-10 h-10 rounded-full border-2 border-emerald-400/50 bg-[#0c182b] overflow-hidden flex items-center justify-center shadow-inner">
                             <span class="p1FallbackAvatar text-emerald-400 font-bold text-xs">۱</span>
                             <img class="p1AvatarImg w-full h-full object-cover hidden" src="" alt="">
                         </div>
-                        <span id="summaryP1Name" class="text-xs font-bold text-white mt-1.5 truncate max-w-[95px]">تیم اول</span>
-                        <div id="summaryP1Wins" class="text-3xl font-black text-emerald-400 mt-0.5 persian-numbers">0</div>
-                        <span class="text-[10px] text-[#8ba2c4]">مسابقه برده</span>
+                        <span id="summaryP1Name" class="text-xs font-bold text-white mt-1 truncate max-w-[95px]">تیم اول</span>
+                        <div id="summaryP1Wins" class="text-2xl font-black text-emerald-400 persian-numbers">0</div>
+                        <span class="text-[9px] text-[#8ba2c4]">مسابقه برده</span>
                     </div>
 
                     <div class="flex flex-col items-center justify-center">
@@ -141,81 +151,74 @@
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <div class="w-12 h-12 rounded-full border-2 border-[#5db2ff]/50 bg-[#0c182b] overflow-hidden flex items-center justify-center shadow-inner">
+                        <div class="w-10 h-10 rounded-full border-2 border-[#5db2ff]/50 bg-[#0c182b] overflow-hidden flex items-center justify-center shadow-inner">
                             <span class="p2FallbackAvatar text-[#5db2ff] font-bold text-xs">۲</span>
                             <img class="p2AvatarImg w-full h-full object-cover hidden" src="" alt="">
                         </div>
-                        <span id="summaryP2Name" class="text-xs font-bold text-white mt-1.5 truncate max-w-[95px]">تیم دوم</span>
-                        <div id="summaryP2Wins" class="text-3xl font-black text-[#5db2ff] mt-0.5 persian-numbers">0</div>
-                        <span class="text-[10px] text-[#8ba2c4]">مسابقه برده</span>
+                        <span id="summaryP2Name" class="text-xs font-bold text-white mt-1 truncate max-w-[95px]">تیم دوم</span>
+                        <div id="summaryP2Wins" class="text-2xl font-black text-[#5db2ff] persian-numbers">0</div>
+                        <span class="text-[9px] text-[#8ba2c4]">مسابقه برده</span>
                     </div>
                 </div>
 
                 <!-- 3 Players View -->
                 <div id="summary3" class="hidden grid-cols-3 gap-2 items-center py-1 text-center">
                     <div class="flex flex-col items-center tg-inner p-2 rounded-xl">
-                        <div class="w-10 h-10 rounded-full border-2 border-emerald-400/50 bg-[#172a46] overflow-hidden flex items-center justify-center mb-1">
+                        <div class="w-9 h-9 rounded-full border-2 border-emerald-400/50 bg-[#172a46] overflow-hidden flex items-center justify-center mb-1">
                             <span class="p1FallbackAvatar text-emerald-400 font-bold text-xs">۱</span>
                             <img class="p1AvatarImg w-full h-full object-cover hidden" src="" alt="">
                         </div>
                         <span class="p1NameText text-[11px] font-bold text-white truncate max-w-[80px]">نفر ۱</span>
-                        <div id="summary3P1Wins" class="text-2xl font-black text-emerald-400 persian-numbers">0</div>
-                        <span class="text-[9px] text-[#8ba2c4]">مسابقه</span>
+                        <div id="summary3P1Wins" class="text-xl font-black text-emerald-400 persian-numbers">0</div>
                     </div>
                     <div class="flex flex-col items-center tg-inner p-2 rounded-xl">
-                        <div class="w-10 h-10 rounded-full border-2 border-[#5db2ff]/50 bg-[#172a46] overflow-hidden flex items-center justify-center mb-1">
+                        <div class="w-9 h-9 rounded-full border-2 border-[#5db2ff]/50 bg-[#172a46] overflow-hidden flex items-center justify-center mb-1">
                             <span class="p2FallbackAvatar text-[#5db2ff] font-bold text-xs">۲</span>
                             <img class="p2AvatarImg w-full h-full object-cover hidden" src="" alt="">
                         </div>
                         <span class="p2NameText text-[11px] font-bold text-white truncate max-w-[80px]">نفر ۲</span>
-                        <div id="summary3P2Wins" class="text-2xl font-black text-[#5db2ff] persian-numbers">0</div>
-                        <span class="text-[9px] text-[#8ba2c4]">مسابقه</span>
+                        <div id="summary3P2Wins" class="text-xl font-black text-[#5db2ff] persian-numbers">0</div>
                     </div>
                     <div class="flex flex-col items-center tg-inner p-2 rounded-xl">
-                        <div class="w-10 h-10 rounded-full border-2 border-amber-400/50 bg-[#172a46] overflow-hidden flex items-center justify-center mb-1">
+                        <div class="w-9 h-9 rounded-full border-2 border-amber-400/50 bg-[#172a46] overflow-hidden flex items-center justify-center mb-1">
                             <span class="p3FallbackAvatar text-amber-400 font-bold text-xs">۳</span>
                             <img class="p3AvatarImg w-full h-full object-cover hidden" src="" alt="">
                         </div>
                         <span class="p3NameText text-[11px] font-bold text-white truncate max-w-[80px]">نفر ۳</span>
-                        <div id="summary3P3Wins" class="text-2xl font-black text-amber-400 persian-numbers">0</div>
-                        <span class="text-[9px] text-[#8ba2c4]">مسابقه</span>
+                        <div id="summary3P3Wins" class="text-xl font-black text-amber-400 persian-numbers">0</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Active Match Panel: شمارنده گیم‌های بازی جاری (هدف ۷ گیم) -->
-            <div class="tg-surface rounded-2xl p-3.5 shadow-sm space-y-2">
-                <div class="flex justify-between items-center text-xs">
-                    <span class="font-bold text-amber-300 flex items-center gap-1.5">
-                        <span class="text-base">🎯</span>
-                        گیم‌های مسابقه جاری (اولین تیمی که ۷ گیم بگیرد برنده مسابقه است)
-                    </span>
+            <!-- Games Row -->
+            <div class="tg-surface rounded-2xl p-3 shadow-sm">
+                <div class="flex justify-between items-center text-[11px] text-amber-300 font-bold mb-2">
+                    <span>🎯 گیم‌های مسابقه فعلی (هدف: ۷ گیم)</span>
                 </div>
-                
                 <div id="gamesScoreRow" class="grid grid-cols-2 gap-2 text-center">
-                    <div class="bg-[#0c182b] p-2 rounded-xl border border-[#27436b]">
-                        <span class="text-[11px] text-emerald-400 font-bold p1NameText truncate block">تیم ۱</span>
-                        <div id="p1CurrentGames" class="text-2xl font-black text-white persian-numbers">0 / 7</div>
+                    <div class="bg-[#0c182b] py-1.5 px-2 rounded-xl border border-[#27436b]">
+                        <span class="text-[10px] text-emerald-400 font-bold p1NameText truncate block">تیم ۱</span>
+                        <div id="p1CurrentGames" class="text-lg font-black text-white persian-numbers">0 / ۷</div>
                     </div>
-                    <div class="bg-[#0c182b] p-2 rounded-xl border border-[#27436b]">
-                        <span class="text-[11px] text-[#5db2ff] font-bold p2NameText truncate block">تیم ۲</span>
-                        <div id="p2CurrentGames" class="text-2xl font-black text-white persian-numbers">0 / 7</div>
+                    <div class="bg-[#0c182b] py-1.5 px-2 rounded-xl border border-[#27436b]">
+                        <span class="text-[10px] text-[#5db2ff] font-bold p2NameText truncate block">تیم ۲</span>
+                        <div id="p2CurrentGames" class="text-lg font-black text-white persian-numbers">0 / ۷</div>
                     </div>
-                    <div id="p3GamesBox" class="col-span-2 bg-[#0c182b] p-2 rounded-xl border border-[#27436b]" style="display: none;">
-                        <span class="text-[11px] text-amber-400 font-bold p3NameText truncate block">نفر ۳</span>
-                        <div id="p3CurrentGames" class="text-2xl font-black text-white persian-numbers">0 / 7</div>
+                    <div id="p3GamesBox" class="col-span-2 bg-[#0c182b] py-1.5 px-2 rounded-xl border border-[#27436b]" style="display: none;">
+                        <span class="text-[10px] text-amber-400 font-bold p3NameText truncate block">نفر ۳</span>
+                        <div id="p3CurrentGames" class="text-lg font-black text-white persian-numbers">0 / ۷</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Active Hand Board: شمارش دست‌های خرد (هدف ۷ دست) -->
-            <div class="tg-surface rounded-2xl p-4 shadow-sm space-y-4">
+            <!-- Active Hand Board با کارت‌های لمسی بسیار بزرگ -->
+            <div class="tg-surface rounded-3xl p-4 shadow-sm space-y-3">
                 
                 <div class="flex justify-between items-center">
                     <div>
                         <span class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                            شمارش دست‌های گیم فعلی (هدف: ۷ دست)
+                            شمارش دست (ضربه روی کارت = ثبت دست)
                         </span>
                     </div>
                     <button onclick="undoLastHand()" id="undoBtn" class="text-xs text-[#5db2ff] active:opacity-60 disabled:opacity-30 transition flex items-center gap-1 font-medium" disabled>
@@ -239,37 +242,72 @@
                     </button>
                 </div>
 
-                <!-- Hand Counters -->
-                <div id="countersContainer" class="grid grid-cols-2 gap-3">
-                    <div class="bg-[#0c182b] rounded-2xl p-3.5 border border-[#27436b] flex flex-col items-center">
-                        <span class="p1NameText font-bold text-emerald-400 text-xs truncate max-w-[110px]">تیم اول</span>
-                        <div id="p1CurrentHands" class="text-5xl font-black text-white my-1 persian-numbers">0</div>
-                        <div id="p1Seeds" class="flex gap-1 h-3 mb-3 items-center justify-center"></div>
-                        <button onclick="scoreHand(1)" class="w-full bg-[#2a8eed] active:bg-[#2072c4] active:scale-95 text-white font-bold py-3 rounded-xl transition text-xs shadow-md shadow-blue-500/20">
-                            + ثبت دست
-                        </button>
+                <!-- کارت‌های لمسی بزرگ (Full-Card Tap) -->
+                <div id="countersContainer" class="grid grid-cols-2 gap-3.5">
+                    
+                    <!-- کارت بزرگ تیم اول -->
+                    <div onclick="scoreHand(1)" class="touch-card bg-gradient-to-b from-[#0c182b] to-[#12233f] border-2 border-emerald-500/40 hover:border-emerald-400 rounded-3xl p-4 flex flex-col items-center justify-between min-h-[220px] shadow-lg relative overflow-hidden">
+                        <div class="flex items-center gap-2 w-full justify-center">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                            <span class="p1NameText font-bold text-emerald-400 text-sm truncate max-w-[120px]">تیم اول</span>
+                        </div>
+                        
+                        <div class="my-auto text-center">
+                            <div id="p1CurrentHands" class="text-7xl font-black text-white my-1 tracking-tight persian-numbers drop-shadow-md">0</div>
+                            <span class="text-[10px] text-slate-400 block font-medium">برای ثبت دست لمس کنید</span>
+                        </div>
+
+                        <div class="w-full flex flex-col items-center gap-2">
+                            <div id="p1Seeds" class="flex gap-1.5 h-3.5 items-center justify-center"></div>
+                            <div class="w-full py-2 rounded-xl bg-emerald-600/30 text-emerald-300 font-bold text-xs flex items-center justify-center gap-1 border border-emerald-500/40">
+                                <span>+</span>
+                                <span>ثبت امتیاز</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="bg-[#0c182b] rounded-2xl p-3.5 border border-[#27436b] flex flex-col items-center">
-                        <span class="p2NameText font-bold text-[#5db2ff] text-xs truncate max-w-[110px]">تیم دوم</span>
-                        <div id="p2CurrentHands" class="text-5xl font-black text-white my-1 persian-numbers">0</div>
-                        <div id="p2Seeds" class="flex gap-1 h-3 mb-3 items-center justify-center"></div>
-                        <button onclick="scoreHand(2)" class="w-full bg-[#2a8eed] active:bg-[#2072c4] active:scale-95 text-white font-bold py-3 rounded-xl transition text-xs shadow-md shadow-blue-500/20">
-                            + ثبت دست
-                        </button>
+                    <!-- کارت بزرگ تیم دوم -->
+                    <div onclick="scoreHand(2)" class="touch-card bg-gradient-to-b from-[#0c182b] to-[#12233f] border-2 border-[#2a8eed]/40 hover:border-[#5db2ff] rounded-3xl p-4 flex flex-col items-center justify-between min-h-[220px] shadow-lg relative overflow-hidden">
+                        <div class="flex items-center gap-2 w-full justify-center">
+                            <span class="w-2 h-2 rounded-full bg-[#5db2ff] animate-ping"></span>
+                            <span class="p2NameText font-bold text-[#5db2ff] text-sm truncate max-w-[120px]">تیم دوم</span>
+                        </div>
+
+                        <div class="my-auto text-center">
+                            <div id="p2CurrentHands" class="text-7xl font-black text-white my-1 tracking-tight persian-numbers drop-shadow-md">0</div>
+                            <span class="text-[10px] text-slate-400 block font-medium">برای ثبت دست لمس کنید</span>
+                        </div>
+
+                        <div class="w-full flex flex-col items-center gap-2">
+                            <div id="p2Seeds" class="flex gap-1.5 h-3.5 items-center justify-center"></div>
+                            <div class="w-full py-2 rounded-xl bg-[#2a8eed]/30 text-[#5db2ff] font-bold text-xs flex items-center justify-center gap-1 border border-[#2a8eed]/40">
+                                <span>+</span>
+                                <span>ثبت امتیاز</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div id="p3Col" class="col-span-2 bg-[#0c182b] rounded-2xl p-3.5 border border-[#27436b] flex flex-col items-center" style="display: none;">
-                        <span class="p3NameText font-bold text-amber-400 text-xs truncate max-w-[150px]">نفر سوم</span>
-                        <div id="p3CurrentHands" class="text-5xl font-black text-white my-1 persian-numbers">0</div>
-                        <div id="p3Seeds" class="flex gap-1 h-3 mb-3 items-center justify-center"></div>
-                        <button onclick="scoreHand(3)" class="w-full max-w-xs bg-amber-600 active:bg-amber-700 active:scale-95 text-white font-bold py-3 rounded-xl transition text-xs shadow-md shadow-amber-500/20">
-                            + ثبت دست نفر سوم
-                        </button>
+                    <!-- کارت بزرگ نفر سوم (۳ نفره) -->
+                    <div id="p3Col" onclick="scoreHand(3)" class="touch-card col-span-2 bg-gradient-to-b from-[#0c182b] to-[#12233f] border-2 border-amber-500/40 hover:border-amber-400 rounded-3xl p-4 flex flex-col items-center justify-between min-h-[190px] shadow-lg relative overflow-hidden" style="display: none;">
+                        <span class="p3NameText font-bold text-amber-400 text-sm truncate max-w-[150px]">نفر سوم</span>
+                        
+                        <div class="my-auto text-center">
+                            <div id="p3CurrentHands" class="text-7xl font-black text-white my-1 tracking-tight persian-numbers">0</div>
+                            <span class="text-[10px] text-slate-400 block font-medium">برای ثبت دست لمس کنید</span>
+                        </div>
+
+                        <div class="w-full max-w-xs flex flex-col items-center gap-2">
+                            <div id="p3Seeds" class="flex gap-1.5 h-3.5 items-center justify-center"></div>
+                            <div class="w-full py-2 rounded-xl bg-amber-600/30 text-amber-300 font-bold text-xs flex items-center justify-center gap-1 border border-amber-500/40">
+                                <span>+</span>
+                                <span>ثبت امتیاز نفر سوم</span>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
 
-                <div class="flex justify-between items-center pt-1 text-[11px]">
+                <div class="flex justify-between items-center pt-2 text-[11px]">
                     <button onclick="resetCurrentHandsOnly()" class="text-[#8ba2c4] active:text-amber-400 transition font-medium">
                         صفر کردن دست‌های این گیم
                     </button>
@@ -294,7 +332,6 @@
                     </div>
                 </div>
 
-                <!-- 2 & 4 Players Header -->
                 <div id="statsTableHeader" class="grid grid-cols-12 items-center bg-[#0c182b] rounded-xl p-2.5 border border-[#27436b]">
                     <div class="col-span-6 text-[11px] font-bold text-[#8ba2c4]">شاخص مقایسه</div>
                     <div class="col-span-3 flex items-center justify-center gap-1.5">
@@ -305,7 +342,6 @@
                     </div>
                 </div>
 
-                <!-- 3 Players Header -->
                 <div id="statsTable3Header" class="grid grid-cols-12 items-center bg-[#0c182b] rounded-xl p-2.5 border border-[#27436b]" style="display: none;">
                     <div class="col-span-4 text-[11px] font-bold text-[#8ba2c4]">شاخص</div>
                     <div class="col-span-2 text-center text-xs font-bold text-emerald-400 truncate p1NameText">نفر ۱</div>
@@ -355,7 +391,6 @@
                 </div>
             </div>
 
-            <!-- Players Configuration -->
             <div class="tg-surface rounded-2xl p-4 shadow-sm space-y-3 text-xs">
                 <span class="text-xs font-bold text-white block pb-1 border-b border-[#27436b]">نام و تصاویر بازیکنان یا تیم‌ها</span>
                 
@@ -473,7 +508,7 @@
             gy += parseInt((days - 1) / 365);
             if (days > 0) days = (days - 1) % 365;
             let gd = days + 1;
-            const sal_a = [0, 31, ((gy % 4 === 0 && gy % 100 !== 0) || (gy % 400 === 0)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            const sal_a = [0, 31, ((gy % 4 === 0 && gy % 100 !== 0) || (gy % 400 === 0)) ? 29 : 28, 31, 30, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
             let gm;
             for (gm = 0; gm < 13; gm++) {
                 const v = sal_a[gm];
@@ -621,13 +656,12 @@
             saveState(true);
         }
 
-        // منطق کامل: ۷ دست = ۱ گیم برده | ۷ گیم = ۱ مسابقه برده در لیگ
+        // هر تاچ = ثبت ۱ دست | رسیدن به ۷ دست = ۱ گیم | رسیدن به ۷ گیم = ۱ برد مسابقه در لیگ
         function scoreHand(teamId) {
             state.handHistoryStack.push(teamId);
             state.teams[teamId].currentHands += 1;
             state.teams[teamId].totalHands += 1;
 
-            // مرحله ۱: بررسی رسیدن به ۷ دست (پایان گیم)
             if (state.teams[teamId].currentHands >= 7) {
                 let gamesWon = 1;
                 let winType = 'برد گیم (+۱ گیم)';
@@ -657,18 +691,15 @@
                     }
                 }
 
-                // اضافه شدن گیم‌های برده به تیم
                 state.teams[teamId].currentGames += gamesWon;
                 state.teams[teamId].totalGames = (state.teams[teamId].totalGames || 0) + gamesWon;
 
-                // صفر کردن دست‌های خرد برای گیم بعدی
                 state.teams[1].currentHands = 0;
                 state.teams[2].currentHands = 0;
                 if (state.teams[3]) state.teams[3].currentHands = 0;
                 state.handHistoryStack = [];
                 state.currentHakem = teamId;
 
-                // مرحله ۲: بررسی رسیدن به ۷ گیم (پایان مسابقه و ثبت برد در لیگ)
                 if (state.teams[teamId].currentGames >= 7) {
                     state.teams[teamId].matchWins += 1;
 
@@ -700,7 +731,6 @@
 
                     if (state.matchHistory.length > 200) state.matchHistory.pop();
 
-                    // صفر کردن گیم‌های مسابقه فعلی برای آغاز مسابقه جدید
                     state.teams[1].currentGames = 0;
                     state.teams[2].currentGames = 0;
                     if (state.teams[3]) state.teams[3].currentGames = 0;
@@ -759,8 +789,8 @@
             let html = '';
             for (let i = 0; i < 7; i++) {
                 html += i < count 
-                    ? `<span class="w-2.5 h-2.5 rounded-full ${colorClass}"></span>` 
-                    : `<span class="w-1.5 h-1.5 rounded-full bg-[#1f3657]"></span>`;
+                    ? `<span class="w-3 h-3 rounded-full ${colorClass} shadow-sm"></span>` 
+                    : `<span class="w-2 h-2 rounded-full bg-[#1f3657]"></span>`;
             }
             return html;
         }
@@ -896,14 +926,12 @@
                 badge.className = 'mt-1 text-[10px] px-2 py-0.5 rounded-full bg-[#0c182b] text-[#8ba2c4] border border-[#27436b]';
             }
 
-            // گیم‌های بازی فعلی
             document.getElementById('p1CurrentGames').innerText = `${state.teams[1].currentGames.toLocaleString('fa-IR')} / ۷`;
             document.getElementById('p2CurrentGames').innerText = `${state.teams[2].currentGames.toLocaleString('fa-IR')} / ۷`;
             if (state.teams[3]) {
                 document.getElementById('p3CurrentGames').innerText = `${state.teams[3].currentGames.toLocaleString('fa-IR')} / ۷`;
             }
 
-            // دست‌های خرد گیم فعلی
             document.getElementById('p1CurrentHands').innerText = state.teams[1].currentHands.toLocaleString('fa-IR');
             document.getElementById('p2CurrentHands').innerText = state.teams[2].currentHands.toLocaleString('fa-IR');
             if (state.teams[3]) document.getElementById('p3CurrentHands').innerText = state.teams[3].currentHands.toLocaleString('fa-IR');
@@ -914,7 +942,6 @@
 
             document.getElementById('undoBtn').disabled = state.handHistoryStack.length === 0;
 
-            // حاکم
             [1, 2, 3].forEach(id => {
                 const btn = document.getElementById(`hakemBtn-${id}`);
                 if (btn) {
@@ -926,7 +953,6 @@
                 }
             });
 
-            // تقویم
             const sDate = parseJalali(state.jalaliStart);
             const eDate = parseJalali(state.jalaliEnd);
             const now = new Date();
